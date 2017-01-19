@@ -2,9 +2,9 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://www.cs.helsinki.fi)
-* [Linkki dokumentaatiooni](https://www.github.com)
+* [Linkki sovellukseeni](http://mitiaine.users.cs.helsinki.fi/tsoha/)
+* [Linkki dokumentaatiooni](https://github.com/Mahtis/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 ## Työn aihe
 
-Laita tähän aihekuvaus tai [linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Pokemon-kanta.html) 
+Työn aiheena on tehdä koehenkilöaikojen hallintajärjestelmä kokeellisen psykologian tutkimuksia varten. Sovelluksen käyttäjät voivat luoda kokeita, joihin he lisäävät varattavia aikoja. Kun koe on luotu ja siihen liitetty varattavia aikoja, käyttäjä voi jakaa kokeeseen liittyvää linkkiä, jonka kautta kiinnostuneet voivat varata vapaina olevia tutkimusaikoja. 
