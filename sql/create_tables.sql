@@ -47,8 +47,6 @@ CREATE TABLE TimeSlot (
 CREATE TABLE Reservation (
   id SERIAL PRIMARY KEY,
   email varchar NOT NULL,
-  startTime timestamp NOT NULL,
-  endTime timestamp NOT NULL,
   timeSlot_id int,
   FOREIGN KEY (timeSlot_id) REFERENCES TimeSlot(id)
 );
