@@ -4,7 +4,11 @@
 
     public static function index(){
       // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
-   	  View::make('home.html');
+   	  View::make('suunnitelmat/index.html');
+    }
+
+    public static function experiment_reservation(){
+   	  View::make('suunnitelmat/experiment.html');
     }
 
     public static function sandbox(){
