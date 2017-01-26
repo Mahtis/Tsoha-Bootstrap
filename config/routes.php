@@ -20,6 +20,10 @@
     HelloWorldController::laboratories();
   });
 
+  $routes->get('/login', function() {
+    HelloWorldController::login();
+  });
+
   $routes->get('/timeslots/experiment/1', function() {
     HelloWorldController::add_timeslots();
   });

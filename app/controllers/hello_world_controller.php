@@ -19,6 +19,10 @@
       View::make('suunnitelmat/laboratories.html');
     }
 
+    public static function login(){
+      View::make('suunnitelmat/login.html');
+    }
+
     public static function add_timeslots(){
       View::make('suunnitelmat/timeslots.html');
     }
