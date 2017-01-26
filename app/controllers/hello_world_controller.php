@@ -11,6 +11,10 @@
    	  View::make('suunnitelmat/experiment.html');
     }
 
+    public static function laboratories(){
+      View::make('suunnitelmat/laboratories.html');
+    }
+
     public static function sandbox(){
       // Testaa koodiasi täällä
       echo 'Hello World!';

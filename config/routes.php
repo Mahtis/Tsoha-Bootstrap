@@ -8,6 +8,10 @@
     HelloWorldController::experiment_reservation();
   });
 
+  $routes->get('/laboratories', function() {
+    HelloWorldController::laboratories();
+  });
+
   $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
   });
