@@ -4,6 +4,10 @@
     HelloWorldController::index();
   });
 
+  $routes->get('/experiment/', function() {
+    HelloWorldController::experiment_reservation();
+  });
+
   $routes->get('/experiment/:id', function($id) {
     HelloWorldController::experiment_reservation();
   });
