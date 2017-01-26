@@ -15,10 +15,26 @@
     </thead>
     <tbody>
       <tr>
-        <td>Maanantai 16.1.2017 12:00-13:00</td>
+        <td>Maanantai 16.01.2017 12:00-13:00</td>
         <td>Laboratorio K140</td>
         <td><button class="btn btn-primary">Varaa</button></td>
       </tr>
   </table>
+
+  <form method="POST" action="/reservation/">
+    <div class="form-group">
+      <label for="time">Aika</label>
+      <input type="text" class="form-control" id="time" name="reservation" value="Maanantai 16.01.2017 12:00-13:00" readonly>
+    </div>
+    <div class="form-group">
+      <label for="email">Sähköposti:</label>
+      <input type="email" class="form-control" id="email">
+    </div>
+    <div>
+      <label for="kysymys1">Kumpi kätinen olet?</label>
+      <input type="text" class="form-control" id="kysymys1">
+    </div>
+    <button type="submit" class="btn btn-primary">Varaa</button>
+  </form>
 
 {% endblock %}
