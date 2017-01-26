@@ -4,11 +4,11 @@
     HelloWorldController::index();
   });
 
-  $routes->get('/experiment', function() {
+  $routes->get('/experiment/:id', function($id) {
     HelloWorldController::experiment_reservation();
   });
 
-  $routes->get('/laboratories', function() {
+  $routes->get('/labs', function() {
     HelloWorldController::laboratories();
   });
 

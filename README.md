@@ -6,6 +6,7 @@ Yleisiä linkkejä:
 * [Linkki dokumentaatiooni](https://github.com/Mahtis/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 * [Linkki etusivun suunnitelmaan](http://mitiaine.users.cs.helsinki.fi/tsoha)
 * [Linkki varaussivun suunnitelmaan](http://mitiaine.users.cs.helsinki.fi/tsoha/experiment)
+* [Linkki laboratoriosivulle](http://mitiaine.users.cs.helsinki.fi/tsoha/labs)
 
 ## Työn aihe
 
