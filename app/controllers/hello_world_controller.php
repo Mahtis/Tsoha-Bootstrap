@@ -11,8 +11,16 @@
    	  View::make('suunnitelmat/experiment.html');
     }
 
+    public static function create_experiment(){
+      View::make('suunnitelmat/create_experiment.html');
+    }
+
     public static function laboratories(){
       View::make('suunnitelmat/laboratories.html');
+    }
+
+    public static function add_timeslots(){
+      View::make('suunnitelmat/timeslots.html');
     }
 
     public static function sandbox(){
