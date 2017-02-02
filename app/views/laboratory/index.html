@@ -10,26 +10,26 @@
   </div>
 
   <h2>Add a new laboratory</h2>
-  <form>
+  <form method="POST" action="{{base_path}}/labs">
   	<div class="form-group">
     	<label for="name">Name of the lab:</label>
-    	<input type="text" class="form-control" id="name">
+    	<input type="text" class="form-control" id="name" name="name">
   	</div>
   	<div class="form-group">
     	<label for="equipment">Description of lab equipment:</label>
-    	<input type="text" class="form-control" id="equipment">
+    	<input type="text" class="form-control" id="equipment" name="equipment">
   	</div>
   	<div class="form-group">
     	<label for="contact">Contact person for the lab:</label>
-    	<input type="email" class="form-control" id="contact">
+    	<input type="text" class="form-control" id="contact" name="contactPerson">
   	</div>
   	<div class="form-group">
     	<label for="location">Location coordinates separated by comma (use dot for decimal place):</label>
-    	<input type="text" class="form-control" id="location">
+    	<input type="text" class="form-control" id="location" name="location">
   	</div>
   	<div class="form-group">
     	<label for="navigation">Navigation instructions for subjects:</label>
-    	<input type="text" class="form-control" id="navigation">
+    	<input type="text" class="form-control" id="navigation" name="navigation">
   	</div>
   	<button type="submit" class="btn btn-default">Submit</button>
   </form>

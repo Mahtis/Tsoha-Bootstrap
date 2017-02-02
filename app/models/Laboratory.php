@@ -4,8 +4,7 @@ class Laboratory extends BaseModel {
 	
 	public $id, $name, $location, $navigation, $equipment, $contactPerson;
 
-	public function __construct($attributes)
-	{
+	public function __construct($attributes) {
 		parent::__construct($attributes);
 	}
 
@@ -48,6 +47,18 @@ class Laboratory extends BaseModel {
     	}
     	return $lab;
 	}
+
+	// Huomaathan, että save-metodi ei ole staattinen!
+  	public function save(){
+    	// Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
+    	$query = DB::connection()->prepare('INSERT INTO Laboratory (name, location, navigation, equipment, contactperson) VALUES (:name, :location, :navigation, :equipment, :contactperson) RETURNING id');
+    	// Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
+    	$query->execute(array('name' => $this->name, 'location' => $this->location, 'navigation' => $this->navigation, 'equipment' => $this->equipment, 'contactperson' => $this->contactPerson));
+    	// Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+    	$row = $query->fetch();
+    	// Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
+    	$this->id = $row['id'];
+  	}
 
 
 

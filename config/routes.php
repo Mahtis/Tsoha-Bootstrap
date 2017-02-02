@@ -20,9 +20,13 @@
     LaboratoryController::index();
   });
 
+  $routes->post('/labs', function() {
+    LaboratoryController::store();
+  });
+
   $routes->get('/labs/:id', function($id) {
     LaboratoryController::getLab($id);
-  });  
+  });
 
   $routes->get('/login', function() {
     HelloWorldController::login();

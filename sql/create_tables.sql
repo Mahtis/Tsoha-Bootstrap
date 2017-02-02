@@ -36,6 +36,7 @@ CREATE TABLE TimeSlot (
   startTime timestamp NOT NULL,
   endTime timestamp NOT NULL,
   maxReservations int NOT NULL,
+  freeSlots int NOT NULL,
   labUser_id int,
   experiment_id int NOT NULL,
   laboratory_id int NOT NULL,
@@ -64,12 +65,5 @@ CREATE TABLE SubjectInfo (
   reservation_id int NOT NULL,
   requiredInfo_id int NOT NULL,
   FOREIGN KEY (reservation_id) REFERENCES Reservation(id),
-  FOREIGN KEY (requiredInfo_id) REFERENCES RequiredInfo(id)
-);
-
-CREATE TABLE AcceptableResponse (
-  id SERIAL PRIMARY KEY,
-  response varchar(2000),
-  requiredInfo_id int NOT NULL,
   FOREIGN KEY (requiredInfo_id) REFERENCES RequiredInfo(id)
 );
