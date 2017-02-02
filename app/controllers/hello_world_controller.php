@@ -28,7 +28,9 @@
     }
 
     public static function sandbox(){
-      // Testaa koodiasi täällä
-      echo 'Hello World!';
+      $lab = Laboratory::findOne(1);
+      $labs = Laboratory::findAll();
+      Kint::dump($labs);
+      Kint::dump($lab);
     }
   }
