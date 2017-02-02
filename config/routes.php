@@ -17,7 +17,7 @@
   });
 
   $routes->get('/labs', function() {
-    Laboratory_controller::index();
+    LaboratoryController::index();
   });
 
   $routes->get('/login', function() {
