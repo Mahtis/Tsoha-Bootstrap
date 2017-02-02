@@ -2,7 +2,7 @@
 
 class Laboratory extends BaseModel {
 	
-	public $id, $name, $location, $navigation, $equipment, $contactPerson
+	public $id, $name, $location, $navigation, $equipment, $contactPerson;
 
 	public function __construct($attributes)
 	{
@@ -49,6 +49,6 @@ class Laboratory extends BaseModel {
     	return $lab;
 	}
 
-	
+
 
 }
