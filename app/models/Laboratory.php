@@ -27,7 +27,7 @@ class Laboratory extends BaseModel {
         		'location' => $row['location'],
         		'navigation' => $row['navigation'],
         		'equipment' => $row['equipment'],
-        		'contactPerson' => $row['contactPerson']));
+        		'contactPerson' => $row['contactperson']));
     	}
     return $labs;
 	}
@@ -44,7 +44,7 @@ class Laboratory extends BaseModel {
         		'location' => $row['location'],
         		'navigation' => $row['navigation'],
         		'equipment' => $row['equipment'],
-        		'contactPerson' => $row['contactPerson']));
+        		'contactPerson' => $row['contactperson']));
     	}
     	return $lab;
 	}
