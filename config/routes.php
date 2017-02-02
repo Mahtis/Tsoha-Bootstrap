@@ -17,7 +17,7 @@
   });
 
   $routes->get('/labs', function() {
-    HelloWorldController::laboratories();
+    Laboratory_controller::index();
   });
 
   $routes->get('/login', function() {
