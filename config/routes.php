@@ -20,6 +20,10 @@
     LaboratoryController::index();
   });
 
+  $routes->get('/labs/:id', function($id) {
+    LaboratoryController::getLab($id);
+  });  
+
   $routes->get('/login', function() {
     HelloWorldController::login();
   });
