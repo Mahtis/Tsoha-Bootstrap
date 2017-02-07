@@ -1,19 +1,31 @@
 <?php
 
   $routes->get('/', function() {
-    HelloWorldController::index();
+    ExperimentController::availableExperiments();
   });
 
   $routes->get('/create_experiment/', function() {
-    HelloWorldController::create_experiment();
+    ExperimentController::experimentCreationPage();
   });
 
-  $routes->get('/experiment/', function() {
-    HelloWorldController::experiment_reservation();
+  $routes->post('/create_experiment/', function() {
+    ExperimentController::createExperiment();
+  });
+
+  $routes->get('/experiments/', function() {
+    ExperimentController::availableExperiments();
   });
 
   $routes->get('/experiment/:id', function($id) {
     HelloWorldController::experiment_reservation();
+  });
+
+  $routes->get('/experiment/:id/timeslots', function($id) {
+    TimeSlotController::listExperimentTimeSlots($id);
+  });
+
+  $routes->post('/experiment/:id/timeslots', function($id) {
+    TimeSlotController::createTimeSlotsToExperiment($id);
   });
 
   $routes->get('/labs', function() {

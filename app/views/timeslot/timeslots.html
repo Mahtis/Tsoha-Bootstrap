@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{experiment.name}}</h2>
+
+<h2>Time slots in experiment</h2>
+<ul class="list-group">
+  {% for slot in timeSlots %}
+	<li class="list-group-item">{{slot.startTime}} - {{slot.endTime}} ; {{slot.laboratory_id}} ; max: {{slot.maxReservations}} ; reserved: {{slot.freeSlots}} <button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
+  {% endfor %}
+</ul>
+
+<h2>Add new time slots</h2>
+<form method="POST" action="{{base_path}}/experiment/{{experiment.id}}/timeslots">
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Start time</th>
+        <th>End time</th>
+        <th>Lab</th>
+        <th>Max reservations</th>
+      </tr>
+    </thead>
+    <tbody id="table">
+      <tr id="fields">
+        <td><input type="datetime-local" id="start" name="startTime"/></td>
+        <td><input type="datetime-local" id="end" name="endTime"></td>
+        <td>
+          <select id="lab">
+          {% for lab in labs %}
+          <option name="laboratory_id" value="{{lab.id}}">{{lab.name}}</option>
+          {% endfor %}
+        </select>
+        </td>
+        <td><input type="number" min="0" id="reservation" name="maxReservations"/></td>
+      </tr>
+    </tbody>
+  </table><!--
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="start">Start time</label>
+      <input class="form-control" type="datetime-local" id="start" name="startTime">
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="end">End time</label>
+      <input class="form-control" type="datetime-local" id="end" name="endTime">
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group">
+      <label for="lab">Select Lab:</label>
+      <select class="form-control" id="lab">
+        {% for lab in labs %}
+        <option name="laboratory_id" value="{{lab.id}}">{{lab.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group">
+    	<label for="reservation">Max n of simultaneous subjects:</label>
+    	<input type="number" class="form-control" min="0" id="reservation" name="maxReservations">
+  	</div>
+  </div>
+  </div>
+  <div id="additionalFields"></div> -->
+  	<button type="button" onclick="addSlot('fields')" class="btn btn-primary">Add another slot</button>
+    <button type="submit" class="btn btn-primary">Create slots</button>
+</form>
+
+<script type="text/javascript">
+function addSlot(place) {
+  var itm = document.getElementById("fields");
+  var cln = itm.cloneNode(true);
+  //var starttime = document.getElementsByName("startTime")[0].value;
+  //var endtime = document.getElementsByName("endTime")[0].value;
+  //var lab = document.getElementsByName("laboratory_id")[0].value;
+  //var n = document.getElementsByName("maxReservations")[0].value;
+
+  //cln.getElementsByName("startTime")[0].value; = starttime;
+  //cln.getElementById("end").value = endtime;
+  //cln.getElementById("lab").value = lab;
+  //cln.getElementById("reservation").value = n;
+  document.getElementById("table").appendChild(cln);
+}
+</script>
+
+{% endblock %}

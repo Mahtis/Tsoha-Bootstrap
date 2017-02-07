@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-md-6">
+  <h1> Ilmoittaudu koehenkilöksi psykologian kokeisiin </h1>
+
+  <h2> Käynnissä olevia kokeita <small> Klikkaa koetta varataksesi aika</small></h2>
+
+  <div class="list-group">
+    {% for exp in exps %}
+    <a href="{{base_path}}/experiments/{{exp.id}}" class="list-group-item">{{exp.name}} <span class="badge">10/17</span></a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

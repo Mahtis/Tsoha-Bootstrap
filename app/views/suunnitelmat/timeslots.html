@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Koe 1</h2>
+<h2>{{experiment.name}}</h2>
 
 <h2>Time slots in experiment</h2>
 <ul class="list-group">
-	<li>Mon 16.01.2017 12:00-13:00 ; Lab K140 ; max 3 subject(s)<button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
-	<li>Mon 16.01.2017 13:00-14:00 ; Lab K140 ; max 1 subject(s)<button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
-	<li>Mon 16.01.2017 14:00-15:00 ; Lab K140 ; max 2 subject(s)<button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
-	<li>Mon 16.01.2017 15:00-16:00 ; Lab K140 ; max 1 subject(s)<button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
+{% for slot in timelSlots %}
+	<li class="list-group-item">{{slot.startTime}} - {{slot.endTime}} ; {{slot.laboratory_id}} ; max: {{slot.maxReservations}} ; reserved: {{slot.freeSlots}} <button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
+{% endfor %}
 </ul>
 
 <h2>Add new time slots</h2>
-<form method="POST" action="{{base_path}}/timelsots/experiment/1/">
     <div class="form-group">
       <label for="start">Start time</label>
       <input type="datetime-local" id="start" name="startTime">
@@ -24,17 +22,16 @@
     <div class="form-group">
       <label for="lab">Select Lab:</label>
       <select class="form-control" id="lab">
-        <option>Lab 1</option>
-        <option>Lab 2</option>
-        <option>Lab 3</option>
-        <option>Lab 4</option>
+        {% for lab in labs %}
+        <option name="laboratory_id" value="{{lab.id}}">{{lab.name}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group">
     	<label for="reservation">Max n of simultaneous subjects:</label>
     	<input type="number" class="form-control" min="0" id="reservation" name="maxReservations">
   	</div>
-  	<button type="submit" class="btn btn-primary">Add another slot</button>
+  	<button type="button" class="btn btn-primary">Add another slot</button>
     <button type="submit" class="btn btn-primary">Create slots</button>
 </form>
 

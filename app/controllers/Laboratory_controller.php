@@ -26,7 +26,7 @@ class LaboratoryController extends BaseController {
     	// Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
     	$lab->save();
 
-    	// Ohjataan käyttäjä lisäyksen jälkeen pelin esittelysivulle
-    	Redirect::to('/labs/' . $lab->id, array('message' => 'Peli on lisätty kirjastoosi!'));
+    	// Ohjataan käyttäjä lisäyksen jälkeen laboratorioiden listaussivulle
+    	Redirect::to('/labs/' . $lab->id, array('message' => 'A new Laboratory has been added.'));
 	}
 }
