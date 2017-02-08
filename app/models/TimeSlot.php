@@ -81,7 +81,7 @@ class TimeSlot extends BaseModel {
 
     // find all timeslots for experiment
     public function findByExperiment($experiment_id) {
-      $query = DB::connection()->prepare('SELECT t.* FROM TimeSlot t, Experiment e WHERE e.id=t.experiment_id AND t.experiment_id = :id');
+      $query = DB::connection()->prepare('SELECT * FROM TimeSlot WHERE experiment_id = :id ORDER BY starttime DESC');
     $query->execute(array('id' => $experiment_id));
     $rows = $query->fetchAll();
       $timeSlots = array();
