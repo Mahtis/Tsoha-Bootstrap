@@ -6,7 +6,7 @@
 <h2>Time slots in experiment</h2>
 <ul class="list-group">
   {% for slot in timeSlots %}
-	<li class="list-group-item">{{slot.startTime}} - {{slot.endTime}} ; {{slot.laboratory_id}} ; max: {{slot.maxReservations}} ; reserved: {{slot.freeSlots}} <button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
+	<li class="list-group-item">{{slot.startTime}} - {{slot.endTime}} ; {{slot.laboratory_id}} ; max: {{slot.maxReservations}} ; free: {{slot.freeSlots}} <button class="btn btn-primary">Edit</button>  <button class="btn btn-primary">Delete</button></li>
   {% endfor %}
 </ul>
 
@@ -26,9 +26,9 @@
         <td><input type="datetime-local" id="start" name="startTime"/></td>
         <td><input type="datetime-local" id="end" name="endTime"></td>
         <td>
-          <select id="lab">
+          <select id="lab" name="laboratory_id" >
           {% for lab in labs %}
-          <option name="laboratory_id" value="{{lab.id}}">{{lab.name}}</option>
+          <option value="{{lab.id}}">{{lab.name}}</option>
           {% endfor %}
         </select>
         </td>

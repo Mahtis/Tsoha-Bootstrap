@@ -12,17 +12,18 @@ class TimeSlotController extends BaseController {
 	public static function createTimeSlotsToExperiment($experiment_id) {
 		$experiment = Experiment::findOne($experiment_id);
 		$params = $_POST;
-		$len = count($params['startTime']);
+		$maxReservations = $params['maxReservations'];
+		$len = count($maxReservations);
 		for ($i=0; $i < $len; $i++) {
-			$date = new DateTime($params['startTime'][$i]);
-			$start = date_timestamp_get($date);
+			$start = date('Y-m-d G:i', strtotime($params['startTime'][$i]));
+			$end = date('Y-m-d G:i', strtotime($params['endTime'][$i]));
 			$slot = new TimeSlot(array(
 				'startTime' => $start,
-				'endTime' => $start,
-				'maxReservations' => $params['maxReservations'][$i],
+				'endTime' => $end,
+				'maxReservations' => $maxReservations[$i],
 				'freeSlots' => $params['maxReservations'][$i],
 				'labuser_id' => 1,
-				'laboratory_id' => 1,
+				'laboratory_id' => $params['laboratory_id'],
 				'experiment_id' => $experiment_id));
 			$slot->save();
 		}
