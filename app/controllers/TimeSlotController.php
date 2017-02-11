@@ -64,7 +64,7 @@ class TimeSlotController extends BaseController {
 		$errors = $slot->errors();
 
 		if(count($errors) > 0) {
-			Redirect::to('/timeslots/' . $slot->id, array('errors' => $errors, 'attributes' => $attributes));
+			Redirect::to('/timeslots/' . $slot->id, array('errors' => $errors, 'timeSlot' => $attributes));
 		} else {
 			$slot->update();
 			Redirect::to('/timeslots/' . $slot->id, array('message' => 'time slot successfully updated.'));
