@@ -5,6 +5,7 @@ class TimeSlot extends BaseModel {
 
 	public function __construct($attributes) {
 		parent::__construct($attributes);
+    $this->validators = array('validateTime', 'validateMaxReservations');
 	}
 
 	public static function findAll() {

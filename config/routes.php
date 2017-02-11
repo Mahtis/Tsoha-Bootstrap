@@ -41,7 +41,11 @@
   });
 
   $routes->get('/login', function() {
-    HelloWorldController::login();
+    LabUserController::login();
+  });
+
+  $routes->post('/login', function() {
+    LabUserController::handleLogin();
   });
 
   $routes->get('/timeslots/:id', function($id) {

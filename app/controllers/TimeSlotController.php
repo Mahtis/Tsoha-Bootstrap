@@ -17,7 +17,7 @@ class TimeSlotController extends BaseController {
 		$experiment = Experiment::findOne($experiment_id);
 		$params = $_POST;
 		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
-		$endTimestamp = strtotime($params['time'] . '+' . $params['duration']);
+		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
 		$endTime = date('Y-m-d G:i', $endTimestamp);
 		$slot = new TimeSlot(array(
 			'startTime' => $startTime,
@@ -27,9 +27,16 @@ class TimeSlotController extends BaseController {
 			'labuser_id' => 1,
 			'laboratory_id' => $params['laboratory_id'],
 			'experiment_id' => $experiment_id));
-		$slot->save();
+
+		$errors = $slot->errors();
+
+		if(count($errors) > 0) {
+			Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('errors' => $errors));
+		} else {
+			$slot->save();
+			Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('message' => 'TimeSlot added.'));
+		}
 		
-		Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('message' => 'TimeSlot added.'));
 	}
 
 	public static function editPage($id) {
@@ -42,7 +49,7 @@ class TimeSlotController extends BaseController {
 	public static function update($id) {
 		$params = $_POST;
 		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
-		$endTimestamp = strtotime($params['time'] . '+' . $params['duration']);
+		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
 		$endTime = date('Y-m-d G:i', $endTimestamp);
 		$attributes = array(
 			'id' => $id,
@@ -54,14 +61,14 @@ class TimeSlotController extends BaseController {
 			'laboratory_id' => $params['laboratory_id'],
 			'experiment_id' => $params['experiment_id']);
 		$slot = new TimeSlot($attributes);
-		//$errors = slot->errors();
+		$errors = $slot->errors();
 
-		//if(count($errors) > 0) {
-		//	View::make('timeslot/edit.html', array('errors' => $errors, 'attributes' => $attributes));
-		//} else {
+		if(count($errors) > 0) {
+			Redirect::to('/timeslots/' . $slot->id, array('errors' => $errors, 'attributes' => $attributes));
+		} else {
 			$slot->update();
 			Redirect::to('/timeslots/' . $slot->id, array('message' => 'time slot successfully updated.'));
-		//}
+		}
 	}
 
 	public static function delete($id) {

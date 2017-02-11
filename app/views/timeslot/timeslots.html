@@ -4,6 +4,16 @@
 
 <h2>{{experiment.name}}</h2>
 
+{% if errors %}
+  <div class="alert alert-danger">
+    <ul>
+      {% for error in errors %}
+      <li>{{error}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 <h2>Add new time slots</h2>
 <form id="form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/timeslots">
   <div class="col-md-1">
@@ -11,7 +21,11 @@
       <label for="day">Day</label>
       <select class="form-control" id="day" name="day">
         {% for i in 1..31 %}
+        {% if i < 10 %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% else %}
         <option value="{{i}}">{{i}}</option>
+        {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -21,7 +35,11 @@
       <label for="m">Month</label>
       <select class="form-control" id="m" name="month">
         {% for i in 1..12 %}
+        {% if i < 10 %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% else %}
         <option value="{{i}}">{{i}}</option>
+        {% endif %}
         {% endfor %}
       </select>
     </div>
