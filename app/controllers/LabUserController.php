@@ -19,5 +19,9 @@ class LabUserController extends BaseController {
 			Redirect::to('/userpage', array('message' => 'Welcome'));
 		}
 	}
+
+	public static function userpage() {
+		View::make('user/userpage.html');
+	}
 }
 

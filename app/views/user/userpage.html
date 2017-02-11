@@ -2,7 +2,9 @@
 {% block content %}
 
 <div class="col-md-12">
-  <h1> Welcome  </h1>
+	{% if user_logged_in %}
+	<h1> Welcome {{user_logged_in.name}} </h1>
+	{% endif %}
 </div>
 <div class="col-md-6">
   <h2> Your experiments </h2>

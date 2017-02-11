@@ -7,6 +7,7 @@
         $user_id = $_SESSION['user'];
 
         $user = LabUser::findOne($user_id);
+        return $user;
       }
       return null;
     }

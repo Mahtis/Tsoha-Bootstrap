@@ -40,7 +40,7 @@ class ExperimentController extends BaseController {
 	}
 
 	public static function experimentCreationPage(){
-      View::make('experiment/create_experiment.html');
+        View::make('experiment/create_experiment.html');
     }
 
     public static function viewExperiment($id) {

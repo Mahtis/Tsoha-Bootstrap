@@ -60,6 +60,10 @@
     TimeSlotController::delete($id);
   });
 
+  $routes->get('/userpage', function() {
+    LabUserController::userpage();
+  });
+
   $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
   });

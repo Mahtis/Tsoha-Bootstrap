@@ -14,3 +14,7 @@ Yleisiä linkkejä:
 ## Työn aihe
 
 Työn aiheena on tehdä koehenkilöaikojen hallintajärjestelmä kokeellisen psykologian tutkimuksia varten. Sovelluksen käyttäjät voivat luoda kokeita, joihin he lisäävät varattavia aikoja. Kun koe on luotu ja siihen liitetty varattavia aikoja, käyttäjä voi jakaa kokeeseen liittyvää linkkiä, jonka kautta kiinnostuneet voivat varata vapaina olevia tutkimusaikoja.
+
+## Kirjautuminen
+
+Sovellukseen voi kirjautua tunnuksella user ja salasanalla user.
