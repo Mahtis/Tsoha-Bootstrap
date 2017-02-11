@@ -1,0 +1,7 @@
+
+{% macro delete_button(action) %}
+  <form method="POST" action="{{action}}" style="display: inline-block;">
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+{% endmacro %}
+

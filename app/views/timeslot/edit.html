@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-{% import "macros/forms.html" as forms %}
 
-<h2>{{experiment.name}}</h2>
+<h1>Edit a time slot</h1>
 
-<h2>Add new time slots</h2>
-<form id="form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/timeslots">
+<h3> Current information </h3>
+
+<p class="bg-primary">
+  Experiment: 
+  {% for exp in experiments %}
+  {% if exp.id == timeSlot.experiment_id %}
+  {{exp.name}},
+  {% endif %}
+  {% endfor %}
+   Laboratory:
+  {% for lab in labs %}
+  {% if lab.id == timeSlot.laboratory_id %}
+  {{lab.name}},
+  {% endif %}
+  {% endfor %}
+   Start time: {{timeSlot.startTime}}, End time: {{timeSlot.endTime}},
+   Max reservations: {{timeSlot.maxReservations}}
+</p>
+
+<h3> Enter new information </h3>
+<form id="form" method="POST" action="{{base_path}}/timeslots/{{timeSlot.id}}">
   <div class="col-md-1">
     <div class="form-group">
       <label for="day">Day</label>
@@ -67,26 +85,23 @@
   </div>
   <div class="col-md-2">
     <div class="form-group">
+      <label for="exp">Select Experiment:</label>
+      <select class="form-control" id="exp" name="experiment_id">
+        {% for exp in experiments %}
+        <option value="{{exp.id}}">{{exp.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group">
       <label for="reservation">Max reservations:</label>
       <input type="number" class="form-control" min="0" id="reservation" name="maxReservations" value="1">
     </div>
   </div>
   <div class="col-md-12">
-    <input id="button" type="submit" class="btn btn-primary" value="Add slot">
+    <input id="button" type="submit" class="btn btn-primary" value="Submit">
   </div>
-  
 </form>
-<div class="col-md-12">
-  <h2>Time slots in experiment</h2>
-  <ul class="list-group">
-    {% for slot in timeSlots %}
-    {% for lab in labs %}
-      {% if lab.id == slot.laboratory_id %}
-    <li class="list-group-item">{{slot.startTime}} - {{slot.endTime}} ; {{lab.name}} ; {{slot.freeSlots}}/{{slot.maxReservations}} free  <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
-      {% endif %}
-    {% endfor %}
-    {% endfor %}
-  </ul>
-</div>
 
 {% endblock %}

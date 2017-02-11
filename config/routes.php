@@ -44,8 +44,16 @@
     HelloWorldController::login();
   });
 
-  $routes->get('/timeslots/experiment/1', function() {
-    HelloWorldController::add_timeslots();
+  $routes->get('/timeslots/:id', function($id) {
+    TimeSlotController::editPage($id);
+  });
+
+  $routes->post('/timeslots/:id', function($id) {
+    TimeSlotController::update($id);
+  });
+
+  $routes->post('/timeslots/:id/delete', function($id) {
+    TimeSlotController::delete($id);
   });
 
   $routes->get('/hiekkalaatikko', function() {

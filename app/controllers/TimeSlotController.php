@@ -32,5 +32,44 @@ class TimeSlotController extends BaseController {
 		Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('message' => 'TimeSlot added.'));
 	}
 
+	public static function editPage($id) {
+		$timeSlot = TimeSlot::findOne($id);
+		$labs = Laboratory::findAll();
+		$experiments = Experiment::findAll();
+		View::make('timeslot/edit.html', array('timeSlot' => $timeSlot, 'labs' => $labs, 'experiments' => $experiments));
+	}
+
+	public static function update($id) {
+		$params = $_POST;
+		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
+		$endTimestamp = strtotime($params['time'] . '+' . $params['duration']);
+		$endTime = date('Y-m-d G:i', $endTimestamp);
+		$attributes = array(
+			'id' => $id,
+			'startTime' => $startTime,
+			'endTime' => $endTime,
+			'maxReservations' => $params['maxReservations'],
+			'freeSlots' => $params['maxReservations'],
+			'labuser_id' => 1,
+			'laboratory_id' => $params['laboratory_id'],
+			'experiment_id' => $params['experiment_id']);
+		$slot = new TimeSlot($attributes);
+		//$errors = slot->errors();
+
+		//if(count($errors) > 0) {
+		//	View::make('timeslot/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+		//} else {
+			$slot->update();
+			Redirect::to('/timeslots/' . $slot->id, array('message' => 'time slot successfully updated.'));
+		//}
+	}
+
+	public static function delete($id) {
+		$slot = TimeSlot::findOne($id);
+		$experiment_id = $slot->experiment_id;
+		$slot->delete();
+		Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('message' => 'TimeSlot deleted.'));
+	}
+
 }
 
