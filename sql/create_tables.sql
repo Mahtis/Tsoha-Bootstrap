@@ -27,8 +27,8 @@ CREATE TABLE UserExperiment (
   labUser_id int NOT NULL,
   experiment_id int NOT NULL,
   PRIMARY KEY (labUser_id, experiment_id),
-  FOREIGN KEY (labUser_id) REFERENCES LabUser(id),
-  FOREIGN KEY (experiment_id) REFERENCES Experiment(id)
+  FOREIGN KEY (labUser_id) REFERENCES LabUser(id) ON DELETE CASCADE,
+  FOREIGN KEY (experiment_id) REFERENCES Experiment(id) ON DELETE CASCADE
 );
 
 CREATE TABLE TimeSlot (
@@ -40,23 +40,23 @@ CREATE TABLE TimeSlot (
   labUser_id int,
   experiment_id int NOT NULL,
   laboratory_id int NOT NULL,
-  FOREIGN KEY (labUser_id) REFERENCES LabUser(id),
-  FOREIGN KEY (experiment_id) REFERENCES Experiment(id),
-  FOREIGN KEY (laboratory_id) REFERENCES Laboratory(id)
+  FOREIGN KEY (labUser_id) REFERENCES LabUser(id) ON DELETE CASCADE,
+  FOREIGN KEY (experiment_id) REFERENCES Experiment(id) ON DELETE CASCADE,
+  FOREIGN KEY (laboratory_id) REFERENCES Laboratory(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Reservation (
   id SERIAL PRIMARY KEY,
   email varchar NOT NULL,
   timeSlot_id int,
-  FOREIGN KEY (timeSlot_id) REFERENCES TimeSlot(id)
+  FOREIGN KEY (timeSlot_id) REFERENCES TimeSlot(id) ON DELETE CASCADE
 );
 
 CREATE TABLE RequiredInfo (
   id SERIAL PRIMARY KEY,
   question varchar(2000) NOT NULL,
   experiment_id int NOT NULL,
-  FOREIGN KEY (experiment_id) REFERENCES Experiment(id)
+  FOREIGN KEY (experiment_id) REFERENCES Experiment(id) ON DELETE CASCADE
 );
 
 CREATE TABLE SubjectInfo (
@@ -64,6 +64,6 @@ CREATE TABLE SubjectInfo (
   response varchar(255),
   reservation_id int NOT NULL,
   requiredInfo_id int NOT NULL,
-  FOREIGN KEY (reservation_id) REFERENCES Reservation(id),
-  FOREIGN KEY (requiredInfo_id) REFERENCES RequiredInfo(id)
+  FOREIGN KEY (reservation_id) REFERENCES Reservation(id) ON DELETE CASCADE,
+  FOREIGN KEY (requiredInfo_id) REFERENCES RequiredInfo(id) ON DELETE CASCADE
 );

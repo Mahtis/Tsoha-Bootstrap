@@ -6,6 +6,7 @@ class Laboratory extends BaseModel {
 
 	public function __construct($attributes) {
 		parent::__construct($attributes);
+        $this->validators = array('validateName');
 	}
 
 	public static function findAll() {
@@ -60,6 +61,25 @@ class Laboratory extends BaseModel {
     	$this->id = $row['id'];
   	}
 
+    public function delete() {
+        $query = DB::connection()->prepare('DELETE FROM Laboratory WHERE id= :id');
+        $query->execute(array('id' => $this->id));
+    }
 
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Laboratory SET 
+            name = :name, 
+            location = :location, 
+            navigation = :navigation,
+            equipment = :equipment,
+            contactperson = :contactperson WHERE id= :id');
+        $query->execute(array('id' => $this->id,
+            'name' => $this->name, 
+            'location' => $this->location,
+            'navigation' => $this->navigation,
+            'equipment' => $this->equipment,
+            'contactperson' => $this->contactPerson));
+
+    }
 
 }

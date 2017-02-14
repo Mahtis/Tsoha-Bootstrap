@@ -23,17 +23,17 @@ INSERT INTO Laboratory (name, location, navigation, equipment, contactPerson) VA
 INSERT INTO Laboratory (name, location, navigation, equipment, contactPerson) VALUES ('Näkölabra 227', '60.175949, 24.953988', 'Toisessa kerroksessa', 'tietokone', 'Pasi');
 
 -- TimeSlot-testidataa
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-12 10:00', '2017-01-12 11:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-12 11:00', '2017-01-12 10:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-12 12:00', '2017-01-12 13:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-13 10:00', '2017-01-13 11:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-13 11:00', '2017-01-13 12:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-14 10:00', '2017-01-14 11:00', 1, 1, 1, 2, 1);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-12 10:00', '2017-01-12 11:00', 2, 2, 3, 1, 2);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-12 10:00', '2017-01-12 11:00', 3, 3, 3, 1, 3);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-13 10:00', '2017-01-13 11:00', 1, 1, 2, 3, 3);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-13 11:00', '2017-01-13 12:00', 1, 1, 2, 3, 3);
-INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-01-13 12:00', '2017-01-13 13:00', 1, 1, 2, 3, 3);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-12 10:00', '2017-03-12 11:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-12 11:00', '2017-03-12 10:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-12 12:00', '2017-03-12 13:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-13 10:00', '2017-03-13 11:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-13 11:00', '2017-03-13 12:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-14 10:00', '2017-03-14 11:00', 1, 1, 1, 2, 1);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-12 10:00', '2017-03-12 11:00', 2, 2, 3, 1, 2);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-12 10:00', '2017-03-12 11:00', 3, 3, 3, 1, 3);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-13 10:00', '2017-03-13 11:00', 1, 1, 2, 3, 3);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-13 11:00', '2017-03-13 12:00', 1, 1, 2, 3, 3);
+INSERT INTO TimeSlot (startTime, endTime, maxReservations, freeSlots, labUser_id, experiment_id, laboratory_id) VALUES ('2017-03-13 12:00', '2017-03-13 13:00', 1, 1, 2, 3, 3);
 
 -- Reservation-testidataa
 INSERT INTO Reservation (email, timeSlot_id) VALUES ('joku@gg.com', 1);

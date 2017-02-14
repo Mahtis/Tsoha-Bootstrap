@@ -7,7 +7,8 @@
     </div>
   {% endif %}
 
-  <h1> {{lab.name}} </h1>
+  <form method="POST" action="{{base_path}}/labs/{{lab.id}}/delete">
+  <h1> {{lab.name}}    <a href="{{base_path}}/labs/{{lab.id}}/edit" class="btn btn-primary">Edit</a>    <button type="submit" class="btn btn-danger">Delete</button></h1></form> 
 
   <p>Equipment: {{lab.equipment}}</p>
 

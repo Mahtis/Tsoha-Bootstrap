@@ -6,6 +6,11 @@ class LabUserController extends BaseController {
 		View::make('user/login.html');
 	}
 
+	public static function logout() {
+		$_SESSION['user'] = null;
+		Redirect::to('/', array('message' => 'You have been logged out.'));
+	}
+
 	public static function handleLogin() {
 		$params = $_POST;
 

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Edit laboratory</h1>
+
+{% if errors %}
+  <div class="alert alert-danger">
+    <ul>
+      {% for error in errors %}
+      <li>{{error}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+
+<h3> Edit information </h3>
+  <form method="POST" action="{{base_path}}/labs/{{lab.id}}/edit">
+  	<div class="form-group">
+    	<label for="name">Name of the lab:</label>
+    	<input type="text" class="form-control" id="name" name="name" value="{{lab.name}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="equipment">Description of lab equipment:</label>
+    	<input type="text" class="form-control" id="equipment" name="equipment" value="{{lab.equipment}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="contact">Contact person for the lab:</label>
+    	<input type="text" class="form-control" id="contact" name="contactPerson" value="{{lab.contactPerson}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="location">Location coordinates separated by comma (use dot for decimal place):</label>
+    	<input type="text" class="form-control" id="location" name="location" value="{{lab.location}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="navigation">Navigation instructions for subjects:</label>
+    	<input type="text" class="form-control" id="navigation" name="navigation" value="{{lab.navigation}}">
+  	</div>
+  	<button type="submit" class="btn btn-default">Update</button>
+    <a href="{{base_path}}/labs/{{lab.id}}" class="btn btn-default">Return</a>
+  </form>
+
+{% endblock %}

@@ -40,4 +40,5 @@
       $errors = $doom->errors();
       Kint::dump($errors);
     }
-  }
+
+}
