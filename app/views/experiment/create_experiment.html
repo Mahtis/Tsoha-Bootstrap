@@ -17,10 +17,8 @@
     	<textarea class="form-control" rows="3" id="description" name="description"></textarea> 
   	</div>
   	<div class="form-group">
-  		<p>Background questions for subjects:</p>
-      <div id="questions">
-      </div>
-      <button type="button" onclick="addField('questions')" class="btn btn-primary">Click to add question</button>
+      <label for="questions">Background questions for subjects (leave empty if no background info is needed):</label>
+      <textarea class="form-control" rows="3" id="questions" name="requiredInfo"></textarea>
   	</div>
 
   	<button type="submit" class="btn btn-success">Create and start adding time slots to the experiment</button>

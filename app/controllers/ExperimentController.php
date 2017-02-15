@@ -8,6 +8,12 @@ class ExperimentController extends BaseController {
 		View::make('experiment/subject_index.html', array('exps' => $experiments));
 	}
 
+    public static function listFreeUpcomingExperimentSlots($experiment_id){
+        $experiment = Experiment::findOne($experiment_id);
+        $timeSlots = TimeSlot::findUpcomingByExperimentAndFreeslots($experiment_id);
+        View::make('experiment/experiment_reservation.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots));
+    }
+
 	public static function createExperiment() {
 		$params = $_POST;
     	
@@ -17,26 +23,13 @@ class ExperimentController extends BaseController {
       		'maxSubjects' => $params['maxSubjects']));
 
     	$experiment->save();
-    	if (array_key_exists('item', $params)) {
-    		if (is_array($params['item'])) {
-    			foreach ($params['item'] as $row) {
-    				if (!$row.isEmpty()) {
-    					$requiredInfo = new RequiredInfo(array(
-    						'question' => $row,
-    						'experiment_id' => $experiment->id));
-    					$requiredInfo->save();
-    				}
-    			}
-    		} else {
-    			if (!$row.isEmpty()) {
-    				$requiredInfo = new RequiredInfo(array(
-    					'question' => $row,
-    					'experiment_id' => $experiment->id));
-    				$requiredInfo->save();
-    			}
-    		}
-    	}
-    	Redirect::to('/experiments/' . $experiment->id, array('message' => 'The  Experiment has been added.'));
+        if(!empty($params['requiredInfo'])) {
+            $requiredInfo = new RequiredInfo(array(
+                'question' => $params['requiredInfo'],
+                'experiment_id' => $experiment->id));
+            $requiredInfo->save();
+        }
+    	Redirect::to('/experiment/' . $experiment->id . '/timeslots', array('message' => 'The  Experiment has been added.'));
 	}
 
 	public static function experimentCreationPage(){

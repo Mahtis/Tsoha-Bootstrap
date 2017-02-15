@@ -38,9 +38,9 @@ class Experiment extends BaseModel {
     	return $experiment;
 	}
 
-	// Find experiments that have timeslots for tomorrow ->
+	// Find experiments that have timeslots with free slots for tomorrow onwards 
 	public static function findAllActive() {
-		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1');
+		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1 AND ts.freeslots > 0');
 		$query->execute();
 		$rows = $query->fetchAll();
 		$experiments[] = array();

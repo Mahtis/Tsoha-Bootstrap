@@ -21,7 +21,7 @@
   });
 
   $routes->get('/experiment/:id', function($id) {
-    HelloWorldController::experiment_reservation();
+    ExperimentController::listFreeUpcomingExperimentSlots($id);
   });
 
   $routes->get('/experiment/:id/timeslots','check_logged_in', function($id) {

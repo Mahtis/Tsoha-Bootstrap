@@ -24,7 +24,7 @@ class RequiredInfo extends BaseModel {
 
 	public function save(){
     	$query = DB::connection()->prepare('INSERT INTO Requiredinfo (question, experiment_id) VALUES (:question, :experiment_id) RETURNING id');
-    	$query->execute(array('question' => $this->quesion, 'experiment_id' => $this->experiment_id));
+    	$query->execute(array('question' => $this->question, 'experiment_id' => $this->experiment_id));
     	$row = $query->fetch();
     	$this->id = $row['id'];
   	}

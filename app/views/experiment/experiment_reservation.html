@@ -6,7 +6,7 @@
   <h2>Vapaana olevat ajat <small>Klikkaa aikaa varataksesi</small></h2>
 
   <div class="list-group">
-    {% for slot in timeslots %}
+    {% for slot in timeSlots %}
     <a href="{{base_path}}/experiment/{{exp.id}}/reservation/{{slot.id}}" class="list-group-item">
       {{slot.startTime}} - {{slot.endTime}}
     </a>
