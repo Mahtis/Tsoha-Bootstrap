@@ -13,9 +13,8 @@ class LaboratoryController extends BaseController {
 	}
 
 	public static function store() {
-		// POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
     	$params = $_POST;
-    	// Alustetaan uusi olio käyttäjän syöttämillä arvoilla
+
     	$lab = new Laboratory(array(
       		'name' => $params['name'],
       		'location' => $params['location'],
@@ -23,11 +22,15 @@ class LaboratoryController extends BaseController {
       		'equipment' => $params['equipment'],
       		'contactPerson' => $params['contactPerson']));
 
-    	// Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
-    	$lab->save();
-
-    	// Ohjataan käyttäjä lisäyksen jälkeen laboratorioiden listaussivulle
-    	Redirect::to('/labs/' . $lab->id, array('message' => 'A new Laboratory has been added.'));
+      // check for errors before saving.
+      $errors = $lab->errors();
+      if(count($errors) > 0) {
+        Redirect::to('/labs', array('errors' => $errors));
+      } else {
+        // if no errors then save.
+        $lab->save();
+        Redirect::to('/labs/' . $lab->id, array('message' => 'A new Laboratory has been added.'));
+      }
 	}
 
   public static function delete($id) {

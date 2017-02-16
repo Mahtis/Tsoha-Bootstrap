@@ -6,6 +6,7 @@ class Experiment extends BaseModel {
 
 	public function __construct($attributes) {
 		parent::__construct($attributes);
+        $this->validators = array('validateName', 'validateDescription', 'validateMaxSubjects');
 	}
 
 	public static function findAll() {
@@ -40,7 +41,7 @@ class Experiment extends BaseModel {
 
 	// Find experiments that have timeslots with free slots for tomorrow onwards 
 	public static function findAllActive() {
-		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1 AND ts.freeslots > 0');
+		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1 AND ts.freeslots > 0 ORDER BY ts.starttime DESC');
 		$query->execute();
 		$rows = $query->fetchAll();
 		$experiments[] = array();
@@ -61,5 +62,17 @@ class Experiment extends BaseModel {
     	$row = $query->fetch();
     	$this->id = $row['id'];
   	}
+
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Experiment SET 
+            name = :name, 
+            maxsubjects = :maxsubjects, 
+            description = :description WHERE id = :id');
+        $query->execute(array(
+            'id' => $this->id,
+            'name' => $this->name, 
+            'maxsubjects' => $this->maxSubjects, 
+            'description' => $this->description));
+    }
 
 }

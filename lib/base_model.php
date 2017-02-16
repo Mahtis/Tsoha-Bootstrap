@@ -36,6 +36,37 @@
       return $errors;
     }
 
+    public function validateDescription() {
+      $errors = array();
+      if($this->description == '' || $this->description == null) {
+        $errors[] = 'The description cannot be empty.';
+      }
+      return $errors;
+    }
+
+    public function validateContactPerson() {
+      $errors = array();
+      if($this->contactPerson == '' || $this->contactPerson == null) {
+        $errors[] = 'A contact person has to be set.';
+      }
+      return $errors;
+    }
+
+    public function validateEmail() {
+      $errors = array();
+      if($this->email == '' || $this->email == null || strpos($this->email, '.') === false) {
+        $errors[] = 'Sähköpostiosoitteen täytyy olla oikea osoite.';
+      }
+      return $errors;
+    }
+
+    // could use something like this to replace the validateName. But don't know how to...
+    public function validateString($string) {
+      if($string == '' || $string == null) {
+        return $string . ' cannot be empty.';
+      }
+    }
+
     public function validateTime() {
       $errors = array();
       if($this->startTime < date('Y-m-d G:i')) {
@@ -47,12 +78,22 @@
       return $errors;
     }
 
-      public function validateMaxReservations() {
-        $errors = array();
-        if($this->maxReservations < 0 || $this->maxReservations == null) {
-          $errors[] = 'Max number has to be positive';
-        }
-        return $errors;
+    public function validateMaxReservations() {
+      $errors = array();
+      if($this->maxReservations < 0 || $this->maxReservations == null) {
+        $errors[] = 'Max number has to be a positive value.';
       }
+      return $errors;
+    }
+
+    public function validateMaxSubjects() {
+      $errors = array();
+      if($this->maxSubjects < 0 || $this->maxSubjects == null) {
+        $errors[] = 'Wanted subject number has to be a positive value.';
+      }
+      return $errors;
+    }
+
+
 
   }

@@ -22,14 +22,22 @@ class ExperimentController extends BaseController {
       		'description' => $params['description'],
       		'maxSubjects' => $params['maxSubjects']));
 
-    	$experiment->save();
-        if(!empty($params['requiredInfo'])) {
-            $requiredInfo = new RequiredInfo(array(
-                'question' => $params['requiredInfo'],
-                'experiment_id' => $experiment->id));
-            $requiredInfo->save();
+        //check errors
+        $errors = $experiment->errors();
+
+        if(count($errors) > 0) {
+            Redirect::to('/create_experiment/', array('errors' => $errors));
+        } else {
+            $experiment->save();
+            //only if there are no errors, check if required info needs to be created.
+            if(!empty($params['requiredInfo'])) {
+                $requiredInfo = new RequiredInfo(array(
+                    'question' => $params['requiredInfo'],
+                    'experiment_id' => $experiment->id));
+                $requiredInfo->save();
+            }
+            Redirect::to('/experiment/' . $experiment->id . '/timeslots', array('message' => 'The Experiment has been created.'));
         }
-    	Redirect::to('/experiment/' . $experiment->id . '/timeslots', array('message' => 'The  Experiment has been added.'));
 	}
 
 	public static function experimentCreationPage(){
@@ -40,6 +48,43 @@ class ExperimentController extends BaseController {
     	$experiment = Experiment::findOne($id);
     	$timeSlots[] = TimeSlot::findByExperiment($experiment->$id);
     	View::make('experiment/experiment.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots));
+    }
+
+    public static function experimentUdpatePage($id) {
+        $exp = Experiment::findOne($id);
+        $req = RequiredInfo::findByExperiment($id);
+        View::make('experiment/edit_experiment.html', array('exp' => $exp, 'req' => $req));
+    }
+
+    public static function update($id) {
+        $params = $_POST;
+        $attributes = array(
+            'id' => $id,
+            'name' => $params['name'],
+            'maxSubjects' => $params['maxSubjects'],
+            'description' => $params['description']);
+        $exp = new Experiment($attributes);
+        $errors = $exp->errors();
+        $requiredInfo = null;
+        if(!empty($params['requiredInfo'])) {
+            $reqId = RequiredInfo::findByExperiment($id);
+            $requiredInfo = new RequiredInfo(array(
+                'id' => $reqId->id,
+                'question' => $params['requiredInfo'],
+                'experiment_id' => $id));
+            $errors2 = $requiredInfo->errors();
+            $errors = array_merge($errors, $errors2);
+        }
+
+        if(count($errors) > 0) {
+            Redirect::to('/experiment/' . $id . '/edit', array('errors' => $errors, 'exp' => $attributes));
+        } else {
+            $exp->update();
+            if($requiredInfo != null) {
+                $requiredInfo->update();
+            }
+            Redirect::to('/experiment/' . $id . '/edit', array('message' => 'Experiment successfully updated.'));
+        }
     }
 
 }

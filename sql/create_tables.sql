@@ -20,7 +20,7 @@ CREATE TABLE Laboratory (
   location varchar(255) NOT NULL,
   navigation varchar(3000),
   equipment varchar(3000),
-  contactPerson varchar(50)
+  contactPerson varchar(50) NOT NULL
 );
 
 CREATE TABLE UserExperiment (
@@ -55,7 +55,7 @@ CREATE TABLE Reservation (
 CREATE TABLE RequiredInfo (
   id SERIAL PRIMARY KEY,
   question varchar(2000) NOT NULL,
-  experiment_id int NOT NULL,
+  experiment_id int NOT NULL UNIQUE,
   FOREIGN KEY (experiment_id) REFERENCES Experiment(id) ON DELETE CASCADE
 );
 

@@ -1,31 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <h1> {{exp.name}} </h1>
+  <h1> {{experiment.name}} 
+  {% if user_logged_in %} 
+  <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
+    <a href="{{base_path}}/experiment/{{experiment.id}}/timeslots" class="btn btn-primary">Edit time slots</a>
+    <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
+    <button type="submit" class="btn btn-danger">Delete </button>
+  </form>
+  {% endif %}
+  </h1>
+  <p>
+    {{experiment.description}}
+  </p>
 
   <h2>Vapaana olevat ajat <small>Klikkaa aikaa varataksesi</small></h2>
 
   <div class="list-group">
     {% for slot in timeSlots %}
-    <a href="{{base_path}}/experiment/{{exp.id}}/reservation/{{slot.id}}" class="list-group-item">
+    <a href="{{base_path}}/experiment/{{experiment.id}}/reservation/{{slot.id}}" class="list-group-item">
       {{slot.startTime}} - {{slot.endTime}}
     </a>
     {% endfor %}
   </div>
-<!--
-  <form method="POST" action="/reservation/">
-    <div class="form-group">
-      <label for="time">Aika</label>
-      <p class="form-control-static" id="time" name="reservation"> Maanantai 16.01.2017 12:00-13:00"</p>
-    <div class="form-group">
-      <label for="email">Sähköposti:</label>
-      <input type="email" class="form-control" id="email">
-    </div>
-    <div>
-      <label for="kysymys1">Kumpi kätinen olet?</label>
-      <input type="text" class="form-control" id="kysymys1">
-    </div>
-    <button type="submit" class="btn btn-primary">Varaa</button>
-  </form>
--->
+  
 {% endblock %}

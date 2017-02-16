@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h1> {{exp.name}} </h1>
+
+  <p>
+    {{exp.desription}}
+  </p>
+
+  <h2>Varattava aika: </h2>
+  <div class="col-md-12">
+    <h3 class="bg-primary">{{time}} - {{end}} </h3>
+  </div>
+
+  <h2>Paikka: </h2>
+  <div class="col-md-6">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d999.0591161089994!2d24.953250148571534!3d60.175497107743915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x63d0329f89d87c0a!2sPsychologicum!5e0!3m2!1sfi!2sfi!4v1486044352571" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+  </div>
+  <div class="col-md-6">
+    <p>{{lab.navigation}}</p>
+    <p>Jos on kysyttävää, ota yhteyttä: {{user.name}}: {{user.email}}</p>
+  </div>
+  <div class="col-md-12">
+    <form method="POST" action="{{base_path}}/experiment/{{exp.id}}/reservation/{{slot.id}}">
+      <div class="form-group">
+        <label for="email">Sähköposti:</label>
+        <input type="email" class="form-control" id="email" name="email">
+      </div>
+      {% if req %}
+      <div class="form-group">
+        <label for="questions">{{req.question}}</label>
+        <textarea class="form-control" rows="3" id="questions" name="response"></textarea>
+        <input type="hidden" name="requiredInfo" value="{{req.id}}">
+      </div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary">Varaa</button>
+    </form>
+  </div>
+{% endblock %}

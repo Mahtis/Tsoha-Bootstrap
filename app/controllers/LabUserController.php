@@ -21,7 +21,7 @@ class LabUserController extends BaseController {
 		} else {
 			$_SESSION['user'] = $user->id;
 
-			Redirect::to('/userpage', array('message' => 'Welcome'));
+			Redirect::to('/userpage', array('message' => 'Login successfull.'));
 		}
 	}
 

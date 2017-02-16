@@ -6,7 +6,7 @@ class Laboratory extends BaseModel {
 
 	public function __construct($attributes) {
 		parent::__construct($attributes);
-        $this->validators = array('validateName');
+        $this->validators = array('validateName', 'validateContactPerson');
 	}
 
 	public static function findAll() {

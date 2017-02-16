@@ -49,7 +49,7 @@ class TimeSlot extends BaseModel {
 
   	// needed to find all timeslots for user
   	public static function findByLabUser($labUser_id) {
-  		$query = DB::connection()->prepare('SELECT * FROM TimeSlot t, LabUser u WHERE u.id=t.labuser_id AND t.labuser_id = :id');
+  		$query = DB::connection()->prepare('SELECT t.* FROM TimeSlot t, LabUser u WHERE u.id=t.labuser_id AND t.labuser_id = :id');
 		$query->execute(array('id' => $labUser_id));
 		$rows = $query->fetchAll();
     	$timeSlots = array();
@@ -91,7 +91,7 @@ class TimeSlot extends BaseModel {
   	// actually, what is needed are the upcoming reservations..
   	public static function findUpcomingByLabUser($labUser_id) {
   		$curDate = date('Y-m-d');
-  		$query = DB::connection()->prepare('SELECT * FROM TimeSlot t, LabUser u WHERE u.id=t.labuser_id AND t.labuser_id = :id AND t.starttime >= :date');
+  		$query = DB::connection()->prepare('SELECT t.* FROM TimeSlot t, LabUser u WHERE u.id=t.labuser_id AND t.labuser_id = :id AND t.starttime >= :date');
 		$query->execute(array('id' => $labUser_id, 'date' => $curDate));
 		$rows = $query->fetchAll();
     	$timeSlots = array();
@@ -112,7 +112,7 @@ class TimeSlot extends BaseModel {
   	// needed to list free timeslots in a specific experiment for subjects
   	public static function findUpcomingByExperimentAndFreeslots($experiment_id) {
   		$curDate = date('Y-m-d');
-  		$query = DB::connection()->prepare('SELECT * FROM TimeSlot t, Experiment e WHERE t.experiment_id=e.id AND t.experiment_id = :id AND t.starttime >= :date AND freeslots > 0');
+  		$query = DB::connection()->prepare('SELECT t.* FROM TimeSlot t, Experiment e WHERE t.experiment_id=e.id AND t.experiment_id = :id AND t.starttime >= :date AND t.freeslots > 0 ORDER BY t.starttime DESC');
 		$query->execute(array('id' => $experiment_id, 'date' => $curDate));
 		$rows = $query->fetchAll();
     	$timeSlots = array();

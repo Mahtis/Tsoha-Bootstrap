@@ -6,7 +6,22 @@ class RequiredInfo extends BaseModel {
 
 	public function __construct($attributes) {
 		parent::__construct($attributes);
+        $this->validators = array('validateQuestion');
 	}
+
+    public static function findByExperiment($experiment_id) {
+        $query = DB::connection()->prepare('SELECT * FROM RequiredInfo WHERE experiment_id = :experiment_id LIMIT 1');
+        $query->execute(array('experiment_id' => $experiment_id));
+        $row = $query->fetch();
+
+        if($row) {
+            $requiredInfo = new Requiredinfo(array(
+                'id' => $row['id'],
+                'question' => $row['question'],
+                'experiment_id' => $experiment_id));
+            return $requiredInfo;
+        }
+    }
 
 	public static function findAll() {
 		$query = DB::connection()->prepare('SELECT * FROM Requiredinfo');
@@ -28,5 +43,15 @@ class RequiredInfo extends BaseModel {
     	$row = $query->fetch();
     	$this->id = $row['id'];
   	}
+
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE RequiredInfo SET 
+            question = :question, 
+            experiment_id = :experiment_id WHERE id = :id');
+        $query->execute(array(
+            'id' => $this->id,
+            'question' => $this->question, 
+            'experiment_id' => $this->experiment_id));
+    }
 
 }

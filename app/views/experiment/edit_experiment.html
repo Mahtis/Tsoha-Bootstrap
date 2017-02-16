@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+  <h1>Edit experiment</h1>
+
+
+  <h2>Current information</h2>
+
+  <p>Name: {{exp.name}}</p> 
+  <p>Wanted subjects: {{exp.maxSubjects}}</p> 
+  <p>Description: {{exp.description}} </p>
+  {% if req %}
+  <p>Questions: {{req.question}}</p>
+  {% endif %}
+
+  <h2> Enter new information </h2>
+
+  <form method="POST" action="{{base_path}}/experiment/{{exp.id}}/edit">
+  	<div class="form-group">
+    	<label for="name">Name of the experiment:</label>
+    	<input type="text" class="form-control" id="name" name="name" value="{{exp.name}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="subjects">Number of wanted subjects:</label>
+    	<input type="number" class="form-control" min="0" id="subjects" name="maxSubjects" value="{{exp.maxSubjects}}">
+  	</div>
+  	<div class="form-group">
+    	<label for="description">Description of the exeperiment for sbujects:</label>
+    	<textarea class="form-control" rows="3" id="description" name="description"></textarea> 
+  	</div>
+  	<div class="form-group">
+      <label for="questions">Background questions for subjects (leave empty if no background info is needed):</label>
+      <textarea class="form-control" rows="3" id="questions" name="requiredInfo"></textarea>
+  	</div>
+
+  	<button type="submit" class="btn btn-success">Update</button>
+  </form>
+
+{% endblock %}

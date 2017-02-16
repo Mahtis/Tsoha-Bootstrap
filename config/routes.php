@@ -24,6 +24,22 @@
     ExperimentController::listFreeUpcomingExperimentSlots($id);
   });
 
+  $routes->get('/experiment/:id/edit', function($id) {
+    ExperimentController::experimentUdpatePage($id);
+  });
+
+  $routes->post('/experiment/:id/edit', function($id) {
+    ExperimentController::update($id);
+  });
+
+  $routes->get('/experiment/:experiment_id/reservation/:timeslot_id', function($experiment_id, $timeslot_id) {
+    ReservationController::reservationPage($experiment_id, $timeslot_id);
+  });
+
+  $routes->post('/experiment/:experiment_id/reservation/:timeslot_id', function($experiment_id, $timeslot_id) {
+    ReservationController::createReservation($experiment_id, $timeslot_id);
+  });
+
   $routes->get('/experiment/:id/timeslots','check_logged_in', function($id) {
     TimeSlotController::listExperimentTimeSlots($id);
   });
