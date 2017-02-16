@@ -18,3 +18,15 @@ Työn aiheena on tehdä koehenkilöaikojen hallintajärjestelmä kokeellisen psy
 ## Kirjautuminen
 
 Sovellukseen voi kirjautua tunnuksella user ja salasanalla user.
+
+## Toteutetut ominaisuudet
+
+Tällä hetkellä sovellukseen voi kirjautua, experimenttejä, time slotteja, laboratorioita ja varauksia voi luoda. 
+Experimenttejä, laboritorioita ja time slotteja voi myös editoida ja poistaa. 
+Experimenttien poistaminen varmistetaan.
+
+## Seuraavaksi toteutettavia ominaisuuksia
+- Laboratorioihin pitää lisätä varmistus ennen poistoa.
+- Kirjautuneen käyttäjän sivu, jossa käyttäjän experimentit ja tulevat varaukset
+- Käyttäjän mahdollisuus lisätä itselleen kokeita, joita ei itse ole luonut
+- Joukko monimutkaisempia tietokantahakuja, kuten aloitussivun käynnissä olevien kokeiden listaus ja niiden vapaiden paikkojen laskeminen.
