@@ -23,6 +23,20 @@ class Reservation extends BaseModel {
     return $reservations;
 	}
 
+  public static function findByTimeSlot($id) {
+    $query = DB::connection()->prepare('SELECT * FROM Reservation WHERE timeslot_id = :id');
+    $query->execute(array('id' => $id));
+    $rows = $query->fetchAll();
+      $reservations = array();
+      foreach($rows as $row){
+          $reservations[] = new Reservation(array(
+            'id' => $row['id'],
+            'email' => $row['email'],
+            'timeslot_id' => $row['timeslot_id']));
+      }
+    return $reservations;
+  }
+
 	// needed to list user's own upcoming reservations
   public static function findUpcomingByLabUser($labUser_id) {
   	$curDate = date('Y-m-d');

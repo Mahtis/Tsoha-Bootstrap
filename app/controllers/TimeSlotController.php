@@ -7,11 +7,15 @@ class TimeSlotController extends BaseController {
 		$timeSlots = TimeSlot::findByExperiment($experiment_id);
 		$labs = Laboratory::findAll();
 		$users = LabUser::findByExperiment($experiment_id);
+		$reservations = array();
+		foreach($timeSlots as $slot) {
+			$reservations[$slot->id] = Reservation::findByTimeSlot($slot->id);
+		}
 		$nextSlot = new TimeSlot(array(
 			'startTime' => date('Y-m-dTG:i'),
 			'endTime' => date('Y-m-dTG:i'),
 			'maxReservations' => 1));
-		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users));
+		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users, 'reservations' => $reservations));
 	}
 
 	public static function createTimeSlotsToExperiment($experiment_id) {
