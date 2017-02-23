@@ -40,4 +40,18 @@ class LabUser extends BaseModel {
     	}
 	}
 
+    public static function findByExperiment($exp_id) {
+        $query = DB::connection()->prepare('SELECT u.* FROM LabUser u, UserExperiment ue, Experiment e WHERE u.id=ue.labuser_id AND e.id=ue.experiment_id AND e.id=:exp_id');
+        $query->execute(array('exp_id' => $exp_id));
+        $rows = $query->fetchAll();
+        $users = array();
+        foreach($rows as $row){
+            $users[] = new LabUser(array('id' => $row['id'],
+                'name' => $row['name'],
+                'username' => $row['username'],
+                'password' => $row['password'],
+                'email' => $row['email']));
+        }
+        return $users;
+    }
 }

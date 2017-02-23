@@ -28,17 +28,8 @@
     }
 
     public static function sandbox(){
-      $doom = new TimeSlot(array(
-        'startTime' => '2017-02-12 10:00',
-        'endTime' => '2017-05-05 11:00',
-        'maxReservations' => -1,
-        'freeSlots' => -1,
-        'labuser_id' => 1,
-        'experiment_id' => 1,
-        'laboratory_id' => 1,
-        'experiment_id' => 1));
-      $errors = $doom->errors();
-      Kint::dump($errors);
+      $experiments = Experiment::findAllActive();
+      Kint::dump($experiments);
     }
 
 }

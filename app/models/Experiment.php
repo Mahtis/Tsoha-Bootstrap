@@ -10,7 +10,7 @@ class Experiment extends BaseModel {
 	}
 
 	public static function findAll() {
-		$query = DB::connection()->prepare('SELECT * FROM Experiment');
+		$query = DB::connection()->prepare('SELECT * FROM Experiment ORDER BY id DESC');
 		$query->execute();
 		$rows = $query->fetchAll();
     	$experiments = array();
@@ -35,16 +35,16 @@ class Experiment extends BaseModel {
         		'name' => $row['name'],
         		'description' => $row['description'],
         		'maxSubjects' => $row['maxsubjects']));
+            return $experiment;
     	}
-    	return $experiment;
 	}
 
 	// Find experiments that have timeslots with free slots for tomorrow onwards 
 	public static function findAllActive() {
-		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1 AND ts.freeslots > 0 ORDER BY ts.starttime DESC');
+		$query = DB::connection()->prepare('SELECT DISTINCT e.* FROM Experiment e, TimeSlot ts WHERE e.id=ts.experiment_id AND ts.starttime > CURRENT_DATE+1 AND ts.freeslots > 0');
 		$query->execute();
 		$rows = $query->fetchAll();
-		$experiments[] = array();
+		$experiments = array();
 		foreach($rows as $row){
       		$experiments[] = new Experiment(array(
         		'id' => $row['id'],
@@ -53,8 +53,22 @@ class Experiment extends BaseModel {
         		'maxSubjects' => $row['maxsubjects']));
     	}
     	return $experiments;
-
 	}
+
+    public static function findByLabUser($labUser_id) {
+        $query = DB::connection()->prepare('SELECT e.* FROM Experiment e, LabUser u, UserExperiment ue WHERE e.id=ue.experiment_id AND u.id=ue.labuser_id AND u.id = :id');
+        $query->execute(array('id' => $labUser_id));
+        $rows = $query->fetchAll();
+        $experiments = array();
+        foreach($rows as $row){
+            $experiments[] = new Experiment(array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'maxSubjects' => $row['maxsubjects']));
+        }
+        return $experiments;
+    }
 
   	public function save(){
     	$query = DB::connection()->prepare('INSERT INTO Experiment (name, description, maxsubjects) VALUES (:name, :description, :maxsubjects) RETURNING id');

@@ -16,8 +16,12 @@
     ExperimentController::createExperiment();
   });
 
-  $routes->get('/experiments/', function() {
-    ExperimentController::availableExperiments();
+  $routes->get('/experiment','check_logged_in', function() {
+    ExperimentController::listAllExperiments();
+  });
+
+  $routes->post('/experiment','check_logged_in', function() {
+    ExperimentController::addUserToExperiment();
   });
 
   $routes->get('/experiment/:id', function($id) {

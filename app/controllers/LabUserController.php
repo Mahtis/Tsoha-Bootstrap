@@ -26,7 +26,20 @@ class LabUserController extends BaseController {
 	}
 
 	public static function userpage() {
-		View::make('user/userpage.html');
+		$user = parent::get_user_logged_in();
+		$experiments = Experiment::findByLabUser($user->id);
+		$counts = array();
+		foreach($experiments as $exp) {
+			$n = Reservation::countReservationsForExperiment($exp->id);
+			if($n != null) {
+				$counts[$exp->id] = $n;
+			} else {
+				$counts[$exp->id] = 0;
+			}
+		}
+		$reservations = Reservation::findUpcomingByLabUser($user->id);
+		View::make('user/userpage.html', array('exps' => $experiments, 'counts' => $counts, 'reservations' => $reservations));
 	}
+
 }
 

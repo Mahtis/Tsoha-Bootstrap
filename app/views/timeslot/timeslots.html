@@ -2,8 +2,23 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
-<h2>{{experiment.name}}</h2>
+<div class="col-md-6">
+  <h2>{{experiment.name}}</h2>
+  <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
+    <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
+    <button type="submit" class="btn btn-danger">Delete </button>
+  </form>
+</div>
+<div class="col-md-6">
+  <h4> Users associated with this experiment:</h4>
+  <ul>
+    {% for user in users %}
+    <li><a href="#">{{user.name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
 
+<div class="col-md-12">
 
 <h2>Add new time slots</h2>
 <form id="form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/timeslots">
@@ -85,6 +100,8 @@
   </div>
   
 </form>
+</div>
+
 <div class="col-md-12">
   <h2>Time slots in experiment</h2>
   <ul class="list-group">

@@ -4,9 +4,23 @@ class ExperimentController extends BaseController {
 
 	public static function availableExperiments() {
 		//this needs to be changed to findAllActive when there are active experiments in the database
-		$experiments = Experiment::findAll();
-		View::make('experiment/subject_index.html', array('exps' => $experiments));
+		$experiments = Experiment::findAllActive();
+        $reserved = array();
+        foreach($experiments as $exp) {
+            $count = Reservation::countReservationsForExperiment($exp->id);
+            if ($count != null) {
+                $reserved[$exp->id] = $count;
+            } else {
+                $reserved[$exp->id] = 0;
+            }
+        }
+		View::make('experiment/subject_index.html', array('exps' => $experiments, 'reserved' => $reserved));
 	}
+
+    public static function listAllExperiments() {
+        $experiments = Experiment::findAll();
+        View::make('experiment/list_experiments.html', array('exps' => $experiments));
+    }
 
     public static function listFreeUpcomingExperimentSlots($experiment_id){
         $experiment = Experiment::findOne($experiment_id);
@@ -85,6 +99,23 @@ class ExperimentController extends BaseController {
             }
             Redirect::to('/experiment/' . $id . '/edit', array('message' => 'Experiment successfully updated.'));
         }
+    }
+
+    public static function addUserToExperiment() {
+        $params = $_POST;
+        $attributes = array(
+            'labuser_id' => $params['user'],
+            'experiment_id' => $params['exp']);
+        $ue = new UserExperiment($attributes);
+        if ($ue->save()){
+            Redirect::to('/experiment/' . $ue->experiment_id . '/timeslots', array('message' => 'Experiment added to your list.'));
+        } else {
+            $errors = array();
+            $errors[] = 'Experiment is already on your list.';
+            Redirect::to('/experiment', array('errors' => $errors));
+        }
+
+        
     }
 
 }
