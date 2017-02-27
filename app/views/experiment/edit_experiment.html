@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% import "macros/forms.html" as forms %}
 
   <h1>Edit experiment</h1>
 
@@ -11,7 +11,7 @@
   <p>Wanted subjects: {{exp.maxSubjects}}</p> 
   <p>Description: {{exp.description}} </p>
   {% if req %}
-  <p>Questions: {{req.question}}</p>
+  <p>Questions: {{req.question}} {{forms.delete_question("#{base_path}/experiment/#{exp.id}/edit/req/#{req.id}/delete")}}</p>
   {% endif %}
 
   <h2> Enter new information </h2>

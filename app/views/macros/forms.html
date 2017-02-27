@@ -5,3 +5,8 @@
   </form>
 {% endmacro %}
 
+{% macro delete_question(action) %}
+  <form method="POST" action="{{action}}">
+    <button type="submit" class="btn btn-danger">Delete question</button>
+  </form>
+{% endmacro %}

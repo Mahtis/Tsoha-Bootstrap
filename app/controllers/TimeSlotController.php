@@ -18,40 +18,84 @@ class TimeSlotController extends BaseController {
 		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users, 'reservations' => $reservations));
 	}
 
+	/*
 	public static function createTimeSlotsToExperiment($experiment_id) {
-		$experiment = Experiment::findOne($experiment_id);
 		$params = $_POST;
 		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
 		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
 		$endTime = date('Y-m-d G:i', $endTimestamp);
+		$laboratory_id = $params['laboratory_id'];
 		$slot = new TimeSlot(array(
 			'startTime' => $startTime,
 			'endTime' => $endTime,
 			'maxReservations' => $params['maxReservations'],
 			'freeSlots' => $params['maxReservations'],
 			'labuser_id' => 1,
-			'laboratory_id' => $params['laboratory_id'],
+			'laboratory_id' => $laboratory_id,
 			'experiment_id' => $experiment_id));
 
 		$errors = $slot->errors();
 
+		$time = date('G:i', $endTimestamp);
+		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
+
 		if(count($errors) > 0) {
-			Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('errors' => $errors));
+			Redirect::to('/labs/' . $laboratory_id . '/timeslots', array('errors' => $errors, 'slot' => $nextSlot));
 		} else {
 			$slot->save();
-			Redirect::to('/experiment/' . $experiment_id . '/timeslots', array('message' => 'TimeSlot added.'));
+			Redirect::to('/labs/' . $laboraotry_id . '/timeslots', array('message' => 'TimeSlot added.', 'slot' => $nextSlot));
+		}
+		
+	}*/
+
+	public static function createTimeSlotsToLab($laboratory_id) {
+		$user = parent::get_user_logged_in();
+		$params = $_POST;
+		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
+		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
+		$endTime = date('Y-m-d G:i', $endTimestamp);
+		$experiment_id = $params['experiment_id'];
+		$slot = new TimeSlot(array(
+			'startTime' => $startTime,
+			'endTime' => $endTime,
+			'maxReservations' => $params['maxReservations'],
+			'freeSlots' => $params['maxReservations'],
+			'labuser_id' => $user->id,
+			'laboratory_id' => $laboratory_id,
+			'experiment_id' => $experiment_id));
+
+		$errors = $slot->errors();
+
+		$time = date('G:i', $endTimestamp);
+		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
+
+		if(count($errors) > 0) {
+			Redirect::to('/labs/' . $laboratory_id, array('errors' => $errors, 'slot' => $nextSlot));
+		} else {
+			$slot->save();
+			Redirect::to('/labs/' . $laboratory_id, array('message' => 'Time slot added: ' . $params['day'] . '.' . $params['month'] . ' ' . $params['time'], 'slot' => $nextSlot));
 		}
 		
 	}
 
 	public static function editPage($id) {
 		$timeSlot = TimeSlot::findOne($id);
+    	$day = date('d', strtotime($timeSlot->startTime));
+    	$month = date('m', strtotime($timeSlot->startTime));
+    	$year = date('Y', strtotime($timeSlot->startTime));
+    	$time = date('G:i', strtotime($timeSlot->startTime));
+    	$duration = '1 hours 00 minutes';
+    	$experiment_id = $timeSlot->experiment_id;
+    	$maxReservations = $timeSlot->maxReservations;
+    	$oldSlot = new SlotInfo($day, $month, $year, $time, $duration, $experiment_id, $maxReservations);
+
 		$labs = Laboratory::findAll();
 		$experiments = Experiment::findAll();
-		View::make('timeslot/edit.html', array('timeSlot' => $timeSlot, 'labs' => $labs, 'experiments' => $experiments));
+		View::make('timeslot/edit.html', array('timeSlot' => $timeSlot, 'labs' => $labs, 'experiments' => $experiments, 'slot' => $oldSlot));
 	}
 
 	public static function update($id) {
+		$user = parent::get_user_logged_in();
 		$params = $_POST;
 		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
 		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
@@ -62,7 +106,7 @@ class TimeSlotController extends BaseController {
 			'endTime' => $endTime,
 			'maxReservations' => $params['maxReservations'],
 			'freeSlots' => $params['maxReservations'],
-			'labuser_id' => 1,
+			'labuser_id' => $user->id,
 			'laboratory_id' => $params['laboratory_id'],
 			'experiment_id' => $params['experiment_id']);
 		$slot = new TimeSlot($attributes);

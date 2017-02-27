@@ -50,6 +50,11 @@ class ExperimentController extends BaseController {
                     'experiment_id' => $experiment->id));
                 $requiredInfo->save();
             }
+            // also add the user to the experiment
+            $ue = new UserExperiment(array(
+                'labuser_id' => parent::get_user_logged_in()->id,
+                'experiment_id' => $experiment->id));
+            $ue->save();
             Redirect::to('/experiment/' . $experiment->id . '/timeslots', array('message' => 'The Experiment has been created.'));
         }
 	}
@@ -82,12 +87,19 @@ class ExperimentController extends BaseController {
         $requiredInfo = null;
         if(!empty($params['requiredInfo'])) {
             $reqId = RequiredInfo::findByExperiment($id);
-            $requiredInfo = new RequiredInfo(array(
-                'id' => $reqId->id,
-                'question' => $params['requiredInfo'],
-                'experiment_id' => $id));
-            $errors2 = $requiredInfo->errors();
-            $errors = array_merge($errors, $errors2);
+            if($reqId != null) {
+                $requiredInfo = new RequiredInfo(array(
+                    'id' => $reqId->id,
+                    'question' => $params['requiredInfo'],
+                    'experiment_id' => $id));
+                $errors2 = $requiredInfo->errors();
+                $errors = array_merge($errors, $errors2);
+            } else {
+                $requiredInfo = new RequiredInfo(array(
+                    'question' => $params['requiredInfo'],
+                    'experiment_id' => $id));
+                $requiredInfo->save();
+            }
         }
 
         if(count($errors) > 0) {
@@ -114,8 +126,19 @@ class ExperimentController extends BaseController {
             $errors[] = 'Experiment is already on your list.';
             Redirect::to('/experiment', array('errors' => $errors));
         }
+    }
 
-        
+    public static function delete($id) {
+        $experiment = Experiment::findOne($id);
+        $experiment->delete();
+        Redirect::to('/experiment', array('message' => 'Experiment deleted.'));
+    }
+
+    public static function deleteExperimentQuestion($requiredinfo_id) {
+        $info = RequiredInfo::findOne($requiredinfo_id);
+        $experiment_id = $info->experiment_id;
+        $info->delete();
+        Redirect::to('/experiment/' . $experiment_id . '/edit', array('message' => 'Experiment questions deleted.'));
     }
 
 }

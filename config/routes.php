@@ -28,12 +28,20 @@
     ExperimentController::listFreeUpcomingExperimentSlots($id);
   });
 
+  $routes->post('/experiment/:id/delete', function($id) {
+    ExperimentController::delete($id);
+  });
+
   $routes->get('/experiment/:id/edit', function($id) {
     ExperimentController::experimentUdpatePage($id);
   });
 
   $routes->post('/experiment/:id/edit', function($id) {
     ExperimentController::update($id);
+  });
+
+  $routes->post('/experiment/:exp_id/edit/req/:req_id/delete', function($exp_id, $req_id) {
+    ExperimentController::deleteExperimentQuestion($req_id);
   });
 
   $routes->get('/experiment/:experiment_id/reservation/:timeslot_id', function($experiment_id, $timeslot_id) {
@@ -48,8 +56,8 @@
     TimeSlotController::listExperimentTimeSlots($id);
   });
 
-  $routes->post('/experiment/:id/timeslots','check_logged_in', function($id) {
-    TimeSlotController::createTimeSlotsToExperiment($id);
+  $routes->post('/labs/:id/timeslots','check_logged_in', function($id) {
+    TimeSlotController::createTimeSlotsToLab($id);
   });
 
   $routes->get('/labs','check_logged_in', function() {

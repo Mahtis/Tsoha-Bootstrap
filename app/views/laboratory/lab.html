@@ -1,11 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-  
-  {% if message != null %}
-    <div class="alert alert-success">
-      {{message}}
-    </div>
-  {% endif %}
 
   <form method="POST" action="{{base_path}}/labs/{{lab.id}}/delete">
   <h1> {{lab.name}}    <a href="{{base_path}}/labs/{{lab.id}}/edit" class="btn btn-primary">Edit</a>    <button type="submit" class="btn btn-danger">Delete</button></h1></form> 
@@ -14,12 +8,149 @@
 
   <p>Contact person: {{lab.contactPerson}}</p>
 
-  <p> A CALENDAR HERE?? </p>
+  {% for i in 0..4 %}
+  <div class="col-md-2">
+    <ul class="list-group">
+    <h4>{{headers[i]}}</h4>
+    {% for res in reservations[i] %}
+    <p class="bg-danger">{{res}}</p>
+    {% endfor %}
+  </div>
+  {% endfor %}
+  {% for i in 5..6 %}
+  <div class="col-md-1">
+    <h4>{{headers[i]}}</h4>
+    {% for res in reservations[i] %}
+    <p class="bg-danger">{{res}}</p>
+    {% endfor %}
+  </div>
+  {% endfor %}
 
+<div class="col-md-12">
+
+<h3>Add a new time slot</h3>
+<form id="form" method="POST" action="{{base_path}}/labs/{{lab.id}}/timeslots">
+  <div class="col-md-1">
+    <div class="form-group">
+      <label for="day">Day</label>
+      <select class="form-control" id="day" name="day">
+        {% for i in 1..31 %}
+        {% if i < 10 %}
+        {% if i == slot.day %}
+        <option value="0{{i}}" selected>0{{i}}</option>
+        {% else %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% endif %}
+        {% else %}
+        {% if i == slot.day %}
+        <option value="{{i}}" selected>{{i}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="form-group">
+      <label for="m">Month</label>
+      <select class="form-control" id="m" name="month">
+        {% for i in 1..12 %}
+        {% if i < 10 %}
+        {% if i == slot.month %}
+        <option value="0{{i}}" selected>0{{i}}</option>
+        {% else %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% endif %}
+        {% else %}
+        {% if i == slot.month %}
+        <option value="{{i}}" selected>{{i}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="form-group">
+      <label for="y">Year</label>
+      <input class="form-control" id="y" name="year" value="2017" readonly />
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="form-group">
+      <label for="t">Time</label>
+      <select class="form-control" id="t" name="time">
+        {% for i in 7..20 %}
+          {% if i ~ ":00" == slot.time %}
+            <option value="{{i}}:00" selected>{{i}}:00</option>
+            <option value="{{i}}:30">{{i}}:30</option>
+          {% elseif i ~ ":30" == slot.time %}
+            <option value="{{i}}:00">{{i}}:00</option>
+            <option value="{{i}}:30" selected>{{i}}:30</option>
+          {% else %}
+            <option value="{{i}}:00">{{i}}:00</option>
+            <option value="{{i}}:30">{{i}}:30</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="form-group">
+      <label for="d">Duration</label>
+      <select class="form-control" id="d" name="duration">
+        <option value="0 hours 30 minutes">0:30</option>
+        {% for i in 1..6 %}
+          {% if i ~ " hours 00 minutes" == slot.duration %}
+            <option value="{{i}} hours 00 minutes" selected>{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes">{{i}}:30</option>
+          {% elseif i ~ " hours 30 minutes" == slot.duration %}
+            <option value="{{i}} hours 00 minutes">{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes" selected>{{i}}:30</option>
+          {% else %}
+            <option value="{{i}} hours 00 minutes">{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes">{{i}}:30</option>
+          {% endif %}
+        {% endfor %} 
+      </select>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group">
+      <label for="exp">Select Experiment:</label>
+      <select class="form-control" id="exp" name="experiment_id">
+        {% for exp in experiments %}
+          {% if exp.id == slot.experiment_id %}
+            <option value="{{exp.id}}" selected>{{exp.name}}</option>
+          {% else %}
+            <option value="{{exp.id}}">{{exp.name}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="form-group">
+      <label for="reservation">Max reservations:</label>
+      <input type="number" class="form-control" min="0" id="reservation" name="maxReservations" value="{{slot.maxReservations}}">
+    </div>
+  </div>
+  <div class="col-md-12">
+    <input id="button" type="submit" class="btn btn-primary" value="Add slot">
+  </div>
+  
+</form>
+</div>
+
+  <div class="col-md-12">
   <h4>Location on map: <small>{{lab.location}}</small></h4>
   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d999.0591161089994!2d24.953250148571534!3d60.175497107743915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x63d0329f89d87c0a!2sPsychologicum!5e0!3m2!1sfi!2sfi!4v1486044352571" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
 
   <h4>Navigation directions:</h4>
   <p>{{lab.navigation}}</p>
-
+  </div>
 {% endblock %}

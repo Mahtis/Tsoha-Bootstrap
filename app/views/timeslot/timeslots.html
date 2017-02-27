@@ -4,122 +4,49 @@
 
 <div class="col-md-6">
   <h2>{{experiment.name}}</h2>
-  <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
-    <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
-    <button type="submit" class="btn btn-danger">Delete </button>
-  </form>
+    <p><b>Description: </b><pre>{{experiment.description}}</pre></p>
+    <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
+      <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
+      <button type="submit" class="btn btn-danger">Delete </button>
+    </form>
 </div>
 <div class="col-md-6">
   <h4> Users associated with this experiment:</h4>
   <ul>
     {% for user in users %}
-    <li><a href="#">{{user.name}}</a></li>
+      <li><a href="#">{{user.name}}</a></li>
     {% endfor %}
   </ul>
 </div>
 
 <div class="col-md-12">
-
-<h2>Add new time slots</h2>
-<form id="form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/timeslots">
-  <div class="col-md-1">
-    <div class="form-group">
-      <label for="day">Day</label>
-      <select class="form-control" id="day" name="day">
-        {% for i in 1..31 %}
-        {% if i < 10 %}
-        <option value="0{{i}}">0{{i}}</option>
-        {% else %}
-        <option value="{{i}}">{{i}}</option>
-        {% endif %}
-        {% endfor %}
-      </select>
-    </div>
+  <h2>Select a lab and add time slots</h2>
+  <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select a laboratory
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      {% for lab in labs %}
+        <li><a href="{{base_path}}/labs/{{lab.id}}">{{lab.name}}</a></li>
+      {% endfor %}
+    </ul>
   </div>
-  <div class="col-md-1">
-    <div class="form-group">
-      <label for="m">Month</label>
-      <select class="form-control" id="m" name="month">
-        {% for i in 1..12 %}
-        {% if i < 10 %}
-        <option value="0{{i}}">0{{i}}</option>
-        {% else %}
-        <option value="{{i}}">{{i}}</option>
-        {% endif %}
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-  <div class="col-md-1">
-    <div class="form-group">
-      <label for="y">Year</label>
-      <input class="form-control" id="y" name="year" value="2017" readonly />
-    </div>
-  </div>
-  <div class="col-md-1">
-    <div class="form-group">
-      <label for="t">Time</label>
-      <select class="form-control" id="t" name="time">
-        {% for i in 7..20 %}
-        <option value="{{i}}:00">{{i}}:00</option>
-        <option value="{{i}}:30">{{i}}:30</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-  <div class="col-md-1">
-    <div class="form-group">
-      <label for="d">Duration</label>
-      <select class="form-control" id="d" name="duration">
-        <option value="0 hours 30 minutes">0:30</option>
-        {% for i in 1..6 %}
-        <option value="{{i}} hours 00 minutes">{{i}}:00</option>
-        <option value="{{i}} hours 30 minutes">{{i}}:30</option>
-        {% endfor %} 
-      </select>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="form-group">
-      <label for="lab">Select Lab:</label>
-      <select class="form-control" id="lab" name="laboratory_id">
-        {% for lab in labs %}
-        <option value="{{lab.id}}">{{lab.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="form-group">
-      <label for="reservation">Max reservations:</label>
-      <input type="number" class="form-control" min="0" id="reservation" name="maxReservations" value="1">
-    </div>
-  </div>
-  <div class="col-md-12">
-    <input id="button" type="submit" class="btn btn-primary" value="Add slot">
-  </div>
-  
-</form>
-</div>
-
-<div class="col-md-12">
   <h2>Time slots in experiment</h2>
     <ul class="list-group">
       {% for slot in timeSlots %}
-      {% for lab in labs %}
-      {% if lab.id == slot.laboratory_id %}
-      <li class="list-group-item"> <a href="#{{slot.id}}"  data-toggle="collapse">{{slot.startTime}} - {{slot.endTime}} ; {{lab.name}} ; {{slot.freeSlots}}/{{slot.maxReservations}} free </a>
-      <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
-      <div id="{{slot.id}}" class="collapse">
-        <ul class="list-group">
-        {% for res in reservations[slot.id] %}
-          <li class="list-group-item">{{res.email}}</li>
+        {% for lab in labs %}
+          {% if lab.id == slot.laboratory_id %}
+            <li class="list-group-item"> <a href="#{{slot.id}}"  data-toggle="collapse">{{slot.startTime}} - {{slot.endTime}} ; {{lab.name}} ; {{slot.freeSlots}}/{{slot.maxReservations}} free </a>
+              <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
+              <div id="{{slot.id}}" class="collapse">
+                <ul class="list-group">
+                  {% for res in reservations[slot.id] %}
+                    <li class="list-group-item">{{res.email}}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
+          {% endif %}
         {% endfor %}
-        </ul>
-      </div>
-      </li>
-      {% endif %}
-      {% endfor %}
       {% endfor %}
     </ul>
 </div>

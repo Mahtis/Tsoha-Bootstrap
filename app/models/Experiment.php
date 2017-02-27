@@ -89,4 +89,9 @@ class Experiment extends BaseModel {
             'description' => $this->description));
     }
 
+    public function delete() {
+      $query = DB::connection()->prepare('DELETE FROM Experiment WHERE id= :id');
+      $query->execute(array('id' => $this->id));
+    }
+
 }

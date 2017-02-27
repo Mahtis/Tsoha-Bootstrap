@@ -37,6 +37,20 @@ class Reservation extends BaseModel {
     return $reservations;
   }
 
+  public static function findByLabAndTime($id, $start, $end) {
+    $query = DB::connection()->prepare('SELECT t.* FROM Reservation r, TimeSlot t WHERE r.timeslot_id = t.id AND t.laboratory_id = :id AND t.starttime > :start AND t.endtime < :end');
+    $query->execute(array('id' => $id, 'start' => $start, 'end' => $end));
+    $rows = $query->fetchAll();
+      $reservations = array();
+      foreach($rows as $row){
+        $startTime = date('G:i', strtotime($row['starttime']));
+        $endTime = date('G:i', strtotime($row['endtime']));
+        $user = LabUser::findOne($row['labuser_id']);
+        $reservations[] = $startTime . '-' . $endTime . ' ' . $user->name;
+      }
+    return $reservations;
+  }
+
 	// needed to list user's own upcoming reservations
   public static function findUpcomingByLabUser($labUser_id) {
   	$curDate = date('Y-m-d');

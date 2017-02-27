@@ -7,10 +7,12 @@
   <div class="list-group">
     {% for exp in exps %}
     <form class="form-group" action="{{base_path}}/experiment" method="POST">
-      <a href="{{base_path}}/experiment/{{exp.id}}/timeslots" class="list-group-item">{{exp.name}} </a>
+      <li class="list-group-item"> 
+      <a href="{{base_path}}/experiment/{{exp.id}}/timeslots" class="btn btn-link">{{exp.name}} </a>
       <input class="btn btn-success" type="submit" value="Add to my experiments">
       <input type="hidden" name="user" value="{{user_logged_in.id}}">
       <input type="hidden" name="exp" value="{{exp.id}}">
+      </li>
     </form>
     {% endfor %}
   </div>

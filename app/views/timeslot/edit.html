@@ -5,23 +5,35 @@
 
 <h3> Current information </h3>
 
-<p class="bg-primary">
+<div class="col-md-4">
+<p>
   Experiment: 
   {% for exp in experiments %}
-  {% if exp.id == timeSlot.experiment_id %}
-  {{exp.name}},
-  {% endif %}
+    {% if exp.id == timeSlot.experiment_id %}
+      <a href="{{base_path}}/experiment/{{exp.id}}/timeslots">{{exp.name}}</a>
+    {% endif %}
   {% endfor %}
-   Laboratory:
-  {% for lab in labs %}
-  {% if lab.id == timeSlot.laboratory_id %}
-  {{lab.name}},
-  {% endif %}
-  {% endfor %}
-   Start time: {{timeSlot.startTime}}, End time: {{timeSlot.endTime}},
-   Max reservations: {{timeSlot.maxReservations}}
 </p>
+<p>
+  Laboratory: 
+  {% for lab in labs %}
+    {% if lab.id == timeSlot.laboratory_id %}
+      <a href="{{base_path}}/labs/{{lab.id}}">{{lab.name}}</a>
+    {% endif %}
+  {% endfor %}
+</p>
+<p>
+  Start time: {{timeSlot.startTime}}
+</p>
+<p>
+  End time: {{timeSlot.endTime}}
+</p>
+<p>
+  Max reservations: {{timeSlot.maxReservations}}
+</p>
+</div>
 
+<div class="col-md-12">
 <h3> Enter new information </h3>
 <form id="form" method="POST" action="{{base_path}}/timeslots/{{timeSlot.id}}">
   <div class="col-md-1">
@@ -29,7 +41,19 @@
       <label for="day">Day</label>
       <select class="form-control" id="day" name="day">
         {% for i in 1..31 %}
+        {% if i < 10 %}
+        {% if i == slot.day %}
+        <option value="0{{i}}" selected>0{{i}}</option>
+        {% else %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% endif %}
+        {% else %}
+        {% if i == slot.day %}
+        <option value="{{i}}" selected>{{i}}</option>
+        {% else %}
         <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -39,7 +63,19 @@
       <label for="m">Month</label>
       <select class="form-control" id="m" name="month">
         {% for i in 1..12 %}
+        {% if i < 10 %}
+        {% if i == slot.month %}
+        <option value="0{{i}}" selected>0{{i}}</option>
+        {% else %}
+        <option value="0{{i}}">0{{i}}</option>
+        {% endif %}
+        {% else %}
+        {% if i == slot.month %}
+        <option value="{{i}}" selected>{{i}}</option>
+        {% else %}
         <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -55,8 +91,16 @@
       <label for="t">Time</label>
       <select class="form-control" id="t" name="time">
         {% for i in 7..20 %}
-        <option value="{{i}}:00">{{i}}:00</option>
-        <option value="{{i}}:30">{{i}}:30</option>
+          {% if i ~ ":00" == slot.time %}
+            <option value="{{i}}:00" selected>{{i}}:00</option>
+            <option value="{{i}}:30">{{i}}:30</option>
+          {% elseif i ~ ":30" == slot.time %}
+            <option value="{{i}}:00">{{i}}:00</option>
+            <option value="{{i}}:30" selected>{{i}}:30</option>
+          {% else %}
+            <option value="{{i}}:00">{{i}}:00</option>
+            <option value="{{i}}:30">{{i}}:30</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -67,8 +111,16 @@
       <select class="form-control" id="d" name="duration">
         <option value="0 hours 30 minutes">0:30</option>
         {% for i in 1..6 %}
-        <option value="{{i}} hours 00 minutes">{{i}}:00</option>
-        <option value="{{i}} hours 30 minutes">{{i}}:30</option>
+          {% if i ~ " hours 00 minutes" == slot.duration %}
+            <option value="{{i}} hours 00 minutes" selected>{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes">{{i}}:30</option>
+          {% elseif i ~ " hours 30 minutes" == slot.duration %}
+            <option value="{{i}} hours 00 minutes">{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes" selected>{{i}}:30</option>
+          {% else %}
+            <option value="{{i}} hours 00 minutes">{{i}}:00</option>
+            <option value="{{i}} hours 30 minutes">{{i}}:30</option>
+          {% endif %}
         {% endfor %} 
       </select>
     </div>
@@ -78,7 +130,11 @@
       <label for="lab">Select Lab:</label>
       <select class="form-control" id="lab" name="laboratory_id">
         {% for lab in labs %}
-        <option value="{{lab.id}}">{{lab.name}}</option>
+          {% if lab.id == timeSlot.laboratory_id %}
+            <option value="{{lab.id}}" selected>{{lab.name}}</option>
+          {% else %}
+            <option value="{{lab.id}}">{{lab.name}}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -88,7 +144,11 @@
       <label for="exp">Select Experiment:</label>
       <select class="form-control" id="exp" name="experiment_id">
         {% for exp in experiments %}
-        <option value="{{exp.id}}">{{exp.name}}</option>
+          {% if exp.id == slot.expepriment_id %}
+            <option value="{{exp.id}}" selected>{{exp.name}}</option>
+          {% else %}
+            <option value="{{exp.id}}">{{exp.name}}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -96,12 +156,12 @@
   <div class="col-md-2">
     <div class="form-group">
       <label for="reservation">Max reservations:</label>
-      <input type="number" class="form-control" min="0" id="reservation" name="maxReservations" value="1">
+      <input type="number" class="form-control" min="0" id="reservation" name="maxReservations" value="{{slot.maxReservations}}">
     </div>
   </div>
   <div class="col-md-12">
-    <input id="button" type="submit" class="btn btn-primary" value="Submit">
+    <input id="button" type="submit" class="btn btn-primary" value="Update">
   </div>
 </form>
-
+</div>
 {% endblock %}
