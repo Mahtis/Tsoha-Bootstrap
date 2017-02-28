@@ -123,6 +123,17 @@ class TimeSlotController extends BaseController {
 		$slot = new TimeSlot($attributes);
 		$errors = $slot->errors();
 
+		// check if the date is valid.
+		if(!checkdate($params['month'], $params['day'], $params['year'])) {
+			$errors[] = 'Not a valid date.';
+			Redirect::to('/timeslots/' . $slot->id, array('errors' => $errors, 'timeSlot' => $attributes));
+		}
+
+		// check here if the lab is already booked at wanted time.
+		if (Laboratory::isLabBooked($params['laboratory_id'], $params['startTime'], $params['endTime'])) {
+			$errors[] = 'The laboratory is already reserved at that time.';
+		}
+
 		if(count($errors) > 0) {
 			Redirect::to('/timeslots/' . $slot->id, array('errors' => $errors, 'timeSlot' => $attributes));
 		} else {
