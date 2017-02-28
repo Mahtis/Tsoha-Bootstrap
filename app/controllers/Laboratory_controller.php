@@ -7,10 +7,15 @@ class LaboratoryController extends BaseController {
 		View::make('laboratory/index.html', array('labs' => $labs));
 	}
 
-	public static function getLab($id) {
+  public static function redirectAccordingToWeek($id) {
+    $week = date('W');
+    Redirect::to('/labs/' . $id . '/week/' . $week);
+  }
+
+	public static function getLab($id, $week) {
     $lab = Laboratory::findOne($id);
     $year = date('Y');
-    $week = date('W');
+    //$week = date('W');
     $headers = array();
     $reservations = array();
     $userReservations = array();
@@ -30,7 +35,7 @@ class LaboratoryController extends BaseController {
       $reservations[] = Reservation::findByLabAndTime($lab->id, $start, $end);
       $userReservations[] = TimeSlot::findNotBookableByLab($id, $start, $end);
     }
-		View::make('laboratory/lab.html', array('lab' => $lab, 'headers' => $headers, 'reservations' => $reservations, 'experiments' => $experiments, 'userReservations' => $userReservations, 'slot' => $defaultSlot));
+		View::make('laboratory/lab.html', array('lab' => $lab, 'headers' => $headers, 'reservations' => $reservations, 'experiments' => $experiments, 'userReservations' => $userReservations, 'slot' => $defaultSlot, 'week' => $week));
 	}
 
 	public static function store() {

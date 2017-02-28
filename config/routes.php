@@ -69,7 +69,11 @@
   });
 
   $routes->get('/labs/:id','check_logged_in', function($id) {
-    LaboratoryController::getLab($id);
+    LaboratoryController::redirectAccordingToWeek($id);
+  });
+
+  $routes->get('/labs/:id/week/:week','check_logged_in', function($id, $week) {
+    LaboratoryController::getLab($id, $week);
   });
 
   $routes->get('/labs/:id/edit','check_logged_in', function($id) {

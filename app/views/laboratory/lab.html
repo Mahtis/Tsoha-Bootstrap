@@ -4,10 +4,26 @@
   <form method="POST" action="{{base_path}}/labs/{{lab.id}}/delete">
   <h1> {{lab.name}}    <a href="{{base_path}}/labs/{{lab.id}}/edit" class="btn btn-primary">Edit</a>    <button type="submit" class="btn btn-danger">Delete</button></h1></form> 
 
-  <p>Equipment: {{lab.equipment}}</p>
+  <p><b>Equipment:</b> {{lab.equipment}}</p>
 
-  <p>Contact person: {{lab.contactPerson}}</p>
+  <p><b>Contact person:</b> {{lab.contactPerson}}</p>
 
+  <ul class="pager">
+    {% if week - 1 < 10 and week > 1 %}
+    <li class="previous"><a href="{{base_path}}/labs/{{lab.id}}/week/0{{week - 1}}">Previous week</a></li>
+    {% elseif week <= 1 %}
+    <li class="previous disabled"><a href="#">Previous week</a></li>
+    {% else %}
+    <li class="previous"><a href="{{base_path}}/labs/{{lab.id}}/week/0{{week - 1}}">Previous week</a></li>
+    {% endif %}
+    {% if week + 1 < 10 %}
+    <li class="next"><a href="{{base_path}}/labs/{{lab.id}}/week/0{{week + 1}}">Next week</a></li>
+    {% elseif week >= 52 %}
+    <li class="next disabled"><a href="#">Next week</a></li>
+    {% else %}
+    <li class="next"><a href="{{base_path}}/labs/{{lab.id}}/week/{{week + 1}}">Next week</a></li>
+    {% endif %}
+  </ul>
   {% for i in 0..4 %}
   <div class="col-md-2">
     <ul class="list-group">
