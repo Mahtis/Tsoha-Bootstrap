@@ -144,7 +144,7 @@
       <label for="exp">Select Experiment:</label>
       <select class="form-control" id="exp" name="experiment_id">
         {% for exp in experiments %}
-          {% if exp.id == slot.expepriment_id %}
+          {% if exp.id == slot.experiment_id %}
             <option value="{{exp.id}}" selected>{{exp.name}}</option>
           {% else %}
             <option value="{{exp.id}}">{{exp.name}}</option>

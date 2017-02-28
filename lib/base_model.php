@@ -32,6 +32,8 @@
       $errors = array();
       if($this->name == '' || $this->name == null) {
         $errors[] = 'Name cannot be empty.';
+      } elseif (strlen($this->name) > 200) {
+        $errors[] = 'Name cannot be more than 200 characters long.';
       }
       return $errors;
     }
@@ -40,6 +42,8 @@
       $errors = array();
       if($this->description == '' || $this->description == null) {
         $errors[] = 'The description cannot be empty.';
+      } elseif (strlen($this->description) > 3000) {
+        $errors[] = 'The length of the description has to be under 3000 characters.';
       }
       return $errors;
     }
@@ -48,6 +52,8 @@
       $errors = array();
       if($this->contactPerson == '' || $this->contactPerson == null) {
         $errors[] = 'A contact person has to be set.';
+      } elseif (strlen($this->contactPerson) > 50) {
+        $errors[] = 'Contact person info cannot be more than 50 characters.';
       }
       return $errors;
     }
@@ -56,6 +62,8 @@
       $errors = array();
       if($this->email == '' || $this->email == null || strpos($this->email, '.') === false) {
         $errors[] = 'Sähköpostiosoitteen täytyy olla oikea osoite.';
+      } elseif (strlen($this->email) > 100) {
+        $errors[] = 'Sähköpostiosoite ei voi olla yli 100 merkkiä pitkä.';
       }
       return $errors;
     }

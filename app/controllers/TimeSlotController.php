@@ -66,15 +66,20 @@ class TimeSlotController extends BaseController {
 			'experiment_id' => $experiment_id));
 
 		$errors = $slot->errors();
+		
+		$time = date('G:i', $endTimestamp);
+		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
+
+		// need to check if the date is valid before moving on and redirect if so, because the labcheck will crash the system if the date is incorrect.
+		if(!checkdate($params['month'], $params['day'], $params['year'])) {
+			$errors[] = 'Not a valid date.';
+			Redirect::to('/labs/' . $laboratory_id, array('errors' => $errors, 'slot' => $nextSlot));
+		}
 
 		// check here if the lab is already booked at wanted time.
 		if (Laboratory::isLabBooked($laboratory_id, $startTime, $endTime)) {
 			$errors[] = 'The laboratory is already reserved at that time.';
 		}
-
-		$time = date('G:i', $endTimestamp);
-		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
-
 		if(count($errors) > 0) {
 			Redirect::to('/labs/' . $laboratory_id, array('errors' => $errors, 'slot' => $nextSlot));
 		} else {
