@@ -13,6 +13,7 @@ class LaboratoryController extends BaseController {
     $week = date('W');
     $headers = array();
     $reservations = array();
+    $userReservations = array();
     $experiments = Experiment::findALL();
     $day = date('d', strtotime('tomorrow'));
     $month = date('m', strtotime('tomorrow'));
@@ -27,8 +28,9 @@ class LaboratoryController extends BaseController {
       $start = date('Y-m-d', strtotime($year."W".$week.$day)) . ' 01:00';
       $end = date('Y-m-d', strtotime($year."W".$week.$day)) . ' 23:00';
       $reservations[] = Reservation::findByLabAndTime($lab->id, $start, $end);
+      $userReservations[] = TimeSlot::findNotBookableByLab($id, $start, $end);
     }
-		View::make('laboratory/lab.html', array('lab' => $lab, 'headers' => $headers, 'reservations' => $reservations, 'experiments' => $experiments, 'slot' => $defaultSlot));
+		View::make('laboratory/lab.html', array('lab' => $lab, 'headers' => $headers, 'reservations' => $reservations, 'experiments' => $experiments, 'userReservations' => $userReservations, 'slot' => $defaultSlot));
 	}
 
 	public static function store() {

@@ -8,8 +8,8 @@
     {% for exp in exps %}
     <form class="form-group" action="{{base_path}}/experiment" method="POST">
       <li class="list-group-item"> 
-      <a href="{{base_path}}/experiment/{{exp.id}}/timeslots" class="btn btn-link">{{exp.name}} </a>
-      <input class="btn btn-success" type="submit" value="Add to my experiments">
+      <a href="{{base_path}}/experiment/{{exp.id}}/timeslots" class="btn btn-link">{{exp.name}} : {{reserved[exp.id]}}/{{exp.maxSubjects}} </a>
+      <input class="btn btn-success btn-sm" type="submit" value="Add to my experiments">
       <input type="hidden" name="user" value="{{user_logged_in.id}}">
       <input type="hidden" name="exp" value="{{exp.id}}">
       </li>

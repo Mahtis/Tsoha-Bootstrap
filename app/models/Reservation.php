@@ -41,13 +41,13 @@ class Reservation extends BaseModel {
     $query = DB::connection()->prepare('SELECT t.* FROM Reservation r, TimeSlot t WHERE r.timeslot_id = t.id AND t.laboratory_id = :id AND t.starttime > :start AND t.endtime < :end');
     $query->execute(array('id' => $id, 'start' => $start, 'end' => $end));
     $rows = $query->fetchAll();
-      $reservations = array();
-      foreach($rows as $row){
-        $startTime = date('G:i', strtotime($row['starttime']));
-        $endTime = date('G:i', strtotime($row['endtime']));
-        $user = LabUser::findOne($row['labuser_id']);
-        $reservations[] = $startTime . '-' . $endTime . ' ' . $user->name;
-      }
+    $reservations = array();
+    foreach($rows as $row){
+      $startTime = date('G:i', strtotime($row['starttime']));
+      $endTime = date('G:i', strtotime($row['endtime']));
+      $user = LabUser::findOne($row['labuser_id']);
+      $reservations[] = $startTime . '-' . $endTime . ' ' . $user->name;
+    }
     return $reservations;
   }
 
@@ -74,7 +74,11 @@ class Reservation extends BaseModel {
     $query->bindParam('id', $exp_id);
     $query->execute();
     $row = $query->fetch();
-    return $row['n'];
+    if ($row['n'] == null) {
+      return 0;
+    } else {
+      return $row['n'];
+    }
   }
 
   /* //this doesn't work.

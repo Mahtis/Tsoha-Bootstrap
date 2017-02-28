@@ -130,6 +130,21 @@ class TimeSlot extends BaseModel {
     	return $timeSlots;
   	}
 
+    // this is to be queried together with Reservation query findByLabAndTime
+    public static function findNotBookableByLab($laboratory_id, $start, $end) {
+      $query = DB::connection()->prepare('SELECT t.* FROM TimeSlot t WHERE t.laboratory_id = :id AND maxReservations = 0 AND t.starttime > :start AND t.endtime < :end');
+      $query->execute(array('id' => $laboratory_id, 'start' => $start, 'end' => $end));
+      $rows = $query->fetchAll();
+      $reservations = array();
+      foreach($rows as $row){
+        $startTime = date('G:i', strtotime($row['starttime']));
+        $endTime = date('G:i', strtotime($row['endtime']));
+        $user = LabUser::findOne($row['labuser_id']);
+        $reservations[] = $startTime . '-' . $endTime . ' ' . $user->name;
+      }
+    return $reservations;
+    }
+
     public function save(){
       $query = DB::connection()->prepare('INSERT INTO TimeSlot (starttime, endtime, maxreservations, freeslots, experiment_id, labuser_id, laboratory_id) VALUES (:starttime, :endtime, :maxreservations, :freeslots, :experiment_id, :labuser_id, :laboratory_id) RETURNING id');
       $query->execute(array(

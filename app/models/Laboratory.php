@@ -49,6 +49,18 @@ class Laboratory extends BaseModel {
     	return $lab;
 	}
 
+    // It would probably be more consistent to have this in TimeSlot.php, but since this function is strictly related to a specific lab, let's keep it here for now.
+    public static function isLabBooked($id, $start, $end) {
+        $query = DB::connection()->prepare('SELECT * FROM TimeSlot WHERE (starttime <= :end AND :start <= endtime) AND (freeslots < maxreservations OR maxreservations = 0) AND laboratory_id = :id');
+        $query->execute(array('id' => $id, 'start' => $start, 'end' => $end));
+        $rows = $query->fetchAll();
+        if (empty($rows)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 	// Huomaathan, että save-metodi ei ole staattinen!
   	public function save(){
     	// Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon

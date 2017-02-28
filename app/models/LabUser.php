@@ -25,6 +25,21 @@ class LabUser extends BaseModel {
     	}
 	}
 
+    public static function findAll() {
+        $query = DB::connection()->prepare('SELECT * FROM LabUser');
+        $query->execute();
+        $rows = $query->fetchAll();
+        $users = array();
+        foreach($rows as $row){
+            $users[] = new LabUser(array('id' => $row['id'],
+                'name' => $row['name'],
+                'username' => $row['username'],
+                'password' => $row['password'],
+                'email' => $row['email']));
+        }
+        return $users;
+    }
+
 	public static function findOne($id) {
 		$query = DB::connection()->prepare('SELECT * FROM LabUser WHERE id = :id LIMIT 1');
     	$query->execute(array('id' => $id));

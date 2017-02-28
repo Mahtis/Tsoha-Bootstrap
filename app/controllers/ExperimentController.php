@@ -6,12 +6,12 @@ class ExperimentController extends BaseController {
 		//this needs to be changed to findAllActive when there are active experiments in the database
 		$experiments = Experiment::findAllActive();
         $reserved = array();
-        foreach($experiments as $exp) {
+        foreach($experiments as $key => $exp) {
             $count = Reservation::countReservationsForExperiment($exp->id);
-            if ($count != null) {
-                $reserved[$exp->id] = $count;
+            if ($count >= $exp->maxSubjects) {
+                unset($experiments[$key]);
             } else {
-                $reserved[$exp->id] = 0;
+                $reserved[$exp->id] = $count;
             }
         }
 		View::make('experiment/subject_index.html', array('exps' => $experiments, 'reserved' => $reserved));
@@ -19,13 +19,18 @@ class ExperimentController extends BaseController {
 
     public static function listAllExperiments() {
         $experiments = Experiment::findAll();
-        View::make('experiment/list_experiments.html', array('exps' => $experiments));
+        $reserved = array();
+        foreach ($experiments as $key => $exp) {
+            $reserved[$exp->id] = Reservation::countReservationsForExperiment($exp->id);
+        }
+        View::make('experiment/list_experiments.html', array('exps' => $experiments, 'reserved' => $reserved));
     }
 
     public static function listFreeUpcomingExperimentSlots($experiment_id){
         $experiment = Experiment::findOne($experiment_id);
         $timeSlots = TimeSlot::findUpcomingByExperimentAndFreeslots($experiment_id);
-        View::make('experiment/experiment_reservation.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots));
+        $reservations = Reservation::countReservationsForExperiment($experiment_id);
+        View::make('experiment/experiment_reservation.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots, 'reservations' => $reservations));
     }
 
 	public static function createExperiment() {
@@ -63,11 +68,13 @@ class ExperimentController extends BaseController {
         View::make('experiment/create_experiment.html');
     }
 
+    /*
     public static function viewExperiment($id) {
     	$experiment = Experiment::findOne($id);
     	$timeSlots[] = TimeSlot::findByExperiment($experiment->$id);
-    	View::make('experiment/experiment.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots));
-    }
+        $reservations = Reservation::countReservationsForExperiment($id);
+    	View::make('experiment/experiment.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots, 'reservations' => $reservations));
+    }*/
 
     public static function experimentUdpatePage($id) {
         $exp = Experiment::findOne($id);

@@ -112,6 +112,10 @@
     LabUserController::userpage();
   });
 
+  $routes->get('/users','check_logged_in', function() {
+    LabUserController::listUsers();
+  });
+
   $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
   });

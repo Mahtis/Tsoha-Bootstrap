@@ -3,7 +3,7 @@
 {% import "macros/forms.html" as forms %}
 
 <div class="col-md-6">
-  <h2>{{experiment.name}}</h2>
+  <h2>{{experiment.name}} <small>{{count}}/{{experiment.maxSubjects}} reserved</small> </h2>
     <p><b>Description: </b><pre>{{experiment.description}}</pre></p>
     <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
       <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>

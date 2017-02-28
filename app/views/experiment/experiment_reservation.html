@@ -1,27 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <h1> {{experiment.name}} 
+  <h1> {{experiment.name}} <small>{{reservations}}/{{experiment.maxSubjects}} varattu</small>
   {% if user_logged_in %} 
-  <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
-    <a href="{{base_path}}/experiment/{{experiment.id}}/timeslots" class="btn btn-primary">Edit time slots</a>
-    <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
-    <button type="submit" class="btn btn-danger">Delete </button>
-  </form>
+    <form class="destroy-form" method="POST" action="{{base_path}}/experiment/{{experiment.id}}/delete" data-confirm="Are you sure you want to delte this experiment? All time slots and reservations will also be deleted.">
+      <a href="{{base_path}}/experiment/{{experiment.id}}/timeslots" class="btn btn-primary">Edit time slots</a>
+      <a href="{{base_path}}/experiment/{{experiment.id}}/edit" class="btn btn-primary">Edit Experiment</a>
+      <button type="submit" class="btn btn-danger">Delete </button>
+    </form>
   {% endif %}
   </h1>
   <p>
     {{experiment.description}}
   </p>
 
-  <h2>Vapaana olevat ajat <small>Klikkaa aikaa varataksesi</small></h2>
+  {% if reservations >= experiment.maxSubjects %}
+    <h2>Valitettavasti koe on jo täynnä.</h2>
+  {% else %}
+    <h2>Vapaana olevat ajat <small>Klikkaa aikaa varataksesi</small></h2>
 
-  <div class="list-group">
-    {% for slot in timeSlots %}
-    <a href="{{base_path}}/experiment/{{experiment.id}}/reservation/{{slot.id}}" class="list-group-item">
-      {{slot.startTime}} - {{slot.endTime}}
-    </a>
-    {% endfor %}
-  </div>
-  
+    <div class="list-group">
+      {% for slot in timeSlots %}
+        <a href="{{base_path}}/experiment/{{experiment.id}}/reservation/{{slot.id}}" class="list-group-item">
+          {{slot.startTime}} - {{slot.endTime}}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}

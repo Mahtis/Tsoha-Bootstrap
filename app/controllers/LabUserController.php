@@ -41,5 +41,14 @@ class LabUserController extends BaseController {
 		View::make('user/userpage.html', array('exps' => $experiments, 'counts' => $counts, 'reservations' => $reservations));
 	}
 
+	public static function listUsers() {
+		$users = LabUser::findAll();
+		$experiments = array();
+		foreach ($users as $user) {
+			$experiments[$user->id] = Experiment::findByLabUser($user->id);
+		}
+		View::make('user/all_users.html', array('users' => $users, 'experiments' => $experiments));
+	}
+
 }
 

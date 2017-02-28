@@ -28,8 +28,12 @@
     }
 
     public static function sandbox(){
-      $experiments = Experiment::findAllActive();
-      Kint::dump($experiments);
+      $count = Reservation::countReservationsForExperiment(11);
+      Kint::dump($count);
+      if ($count == null) {
+        $count = 0;
+      }
+      Kint::dump($count);
     }
 
 }

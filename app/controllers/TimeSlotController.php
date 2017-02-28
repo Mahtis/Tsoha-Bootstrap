@@ -8,6 +8,7 @@ class TimeSlotController extends BaseController {
 		$labs = Laboratory::findAll();
 		$users = LabUser::findByExperiment($experiment_id);
 		$reservations = array();
+		$count = Reservation::countReservationsForExperiment($experiment_id);
 		foreach($timeSlots as $slot) {
 			$reservations[$slot->id] = Reservation::findByTimeSlot($slot->id);
 		}
@@ -15,7 +16,7 @@ class TimeSlotController extends BaseController {
 			'startTime' => date('Y-m-dTG:i'),
 			'endTime' => date('Y-m-dTG:i'),
 			'maxReservations' => 1));
-		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users, 'reservations' => $reservations));
+		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users, 'reservations' => $reservations, 'count' => $count));
 	}
 
 	/*
@@ -65,6 +66,11 @@ class TimeSlotController extends BaseController {
 			'experiment_id' => $experiment_id));
 
 		$errors = $slot->errors();
+
+		// check here if the lab is already booked at wanted time.
+		if (Laboratory::isLabBooked($laboratory_id, $startTime, $endTime)) {
+			$errors[] = 'The laboratory is already reserved at that time.';
+		}
 
 		$time = date('G:i', $endTimestamp);
 		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
