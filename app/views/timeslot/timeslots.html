@@ -36,7 +36,10 @@
         {% for lab in labs %}
           {% if lab.id == slot.laboratory_id %}
             <li class="list-group-item"> <a href="#{{slot.id}}"  data-toggle="collapse">{{slot.startTime}} - {{slot.endTime}} ; {{lab.name}} ; {{slot.freeSlots}}/{{slot.maxReservations}} free </a>
-              <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
+              {% if slot.freeSlots == slot.maxReservations %}
+                <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  
+              {% endif %}
+                {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
               <div id="{{slot.id}}" class="collapse">
                 <ul class="list-group">
                   {% for res in reservations[slot.id] %}
