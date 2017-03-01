@@ -97,17 +97,24 @@ class Reservation extends BaseModel {
     return $resCounts;
   }*/
 
+  // when creating a reservation, the corresponding timeslots freeslots need to be updated, but also all other overlapping timeslots need to be deleted.
   public function createReservation() {
   	$dbh = DB::connection();
   	$dbh->beginTransaction();
-  	$query = $dbh->prepare('INSERT INTO Reservation (email, timeslot_id) VALUES (:email, :timeslot_id) RETURNING id');
-    $query->execute(array(
+    $timeSlot = TimeSlot::findOne($this->timeSlot_id);
+  	$insertQuery = $dbh->prepare('INSERT INTO Reservation (email, timeslot_id) VALUES (:email, :timeslot_id) RETURNING id');
+    $insertQuery->execute(array(
      	'email' => $this->email, 
-     	'timeslot_id' => $this->timeSlot_id));
-    $row = $query->fetch();
+     	'timeslot_id' => $timeSlot->id));
+    $row = $insertQuery->fetch();
     $this->id = $row['id'];
-    $query2 = $dbh->prepare('UPDATE TimeSlot SET freeslots=freeslots-1 WHERE id=:id');
-    $query2->execute(array('id' => $this->timeSlot_id));
+
+    $updateQuery = $dbh->prepare('UPDATE TimeSlot SET freeslots=freeslots-1 WHERE id=:id');
+    $updateQuery->execute(array('id' => $timeSlot->id));
+
+    $deleteQuery = $dbh->prepare('DELETE FROM TimeSlot WHERE laboratory_id = :lab_id AND starttime <= :end AND :start <= endtime AND id != :id');
+    $deleteQuery->execute(array('id'=> $timeSlot->id, 'start' => $timeSlot->startTime, 'end' => $timeSlot->endTime, 'lab_id' => $timeSlot->laboratory_id));
+
     $dbh->commit();
   }
 }

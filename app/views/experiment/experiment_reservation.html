@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block title %}
+  Kokeen {{experiment.name}} vapaat ajat
+{% endblock %}
 {% block content %}
 
   <h1> {{experiment.name}} <small>{{reservations}}/{{experiment.maxSubjects}} varattu</small>

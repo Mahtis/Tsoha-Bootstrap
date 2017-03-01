@@ -145,6 +145,25 @@ class TimeSlot extends BaseModel {
     return $reservations;
     }
 
+    public static function findOverlapping($laboratory_id, $start, $end, $id) {
+      $query = DB::connection()->prepare('SELECT * FROM TimeSlot WHERE laboratory_id = :lab_id AND starttime <= :end AND :start <= endtime AND id != :id');
+      $query->execute(array('lab_id' => $laboratory_id, 'start' => $start, 'end' => $end, 'id' => $id));
+      $rows = $query->fetchAll();
+      $timeSlots = array();
+      foreach($rows as $row){
+          $timeSlots[] = new TimeSlot(array(
+            'id' => $row['id'],
+            'startTime' => $row['starttime'],
+            'endTime' => $row['endtime'],
+            'maxReservations' => $row['maxreservations'],
+            'freeSlots' => $row['freeslots'],
+            'labuser_id' => $row['labuser_id'],
+            'experiment_id' => $row['experiment_id'],
+            'laboratory_id' => $row['laboratory_id']));
+      }
+      return $timeSlots;
+    }
+
     public function save(){
       $query = DB::connection()->prepare('INSERT INTO TimeSlot (starttime, endtime, maxreservations, freeslots, experiment_id, labuser_id, laboratory_id) VALUES (:starttime, :endtime, :maxreservations, :freeslots, :experiment_id, :labuser_id, :laboratory_id) RETURNING id');
       $query->execute(array(
