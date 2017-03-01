@@ -55,7 +55,7 @@ class TimeSlotController extends BaseController {
 		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
 		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
 		$endTime = date('Y-m-d G:i', $endTimestamp);
-		$experiment_id = $params['experiment_id'];
+		$experiment = Experiment::findOne($params['experiment_id']);
 		$slot = new TimeSlot(array(
 			'startTime' => $startTime,
 			'endTime' => $endTime,
@@ -63,12 +63,12 @@ class TimeSlotController extends BaseController {
 			'freeSlots' => $params['maxReservations'],
 			'labuser_id' => $user->id,
 			'laboratory_id' => $laboratory_id,
-			'experiment_id' => $experiment_id));
+			'experiment_id' => $experiment->id));
 
 		$errors = $slot->errors();
 		
 		$time = date('G:i', $endTimestamp);
-		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
+		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment->id, $params['maxReservations']);
 
 		// need to check if the date is valid before moving on and redirect if so, because the labcheck will crash the system if the date is incorrect.
 		if(!checkdate($params['month'], $params['day'], $params['year'])) {
@@ -84,7 +84,7 @@ class TimeSlotController extends BaseController {
 			Redirect::to('/labs/' . $laboratory_id, array('errors' => $errors, 'slot' => $nextSlot));
 		} else {
 			$slot->save();
-			Redirect::to('/labs/' . $laboratory_id, array('message' => 'Time slot added: ' . $params['day'] . '.' . $params['month'] . ' ' . $params['time'], 'slot' => $nextSlot));
+			Redirect::to('/labs/' . $laboratory_id, array('message' => 'Time slot added: ' . $params['day'] . '.' . $params['month'] . ' ' . $params['time'] . ', to experiment: ' . $experiment->name, 'slot' => $nextSlot));
 		}
 		
 	}
