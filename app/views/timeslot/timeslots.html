@@ -42,7 +42,10 @@
               {% if slot.freeSlots == slot.maxReservations %}
                 <a href="{{base_path}}/timeslots/{{slot.id}}" class="btn btn-primary">Edit</a>  
               {% endif %}
-                {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}}
+              {{forms.delete_button("#{base_path}/timeslots/#{slot.id}/delete")}} 
+              {% if user_logged_in.id == slot.labuser_id %}
+                <span class="label label-warning"> My slot</span>
+              {% endif %}
               <div id="{{slot.id}}" class="collapse">
                 <ul class="list-group">
                   {% for res in reservations[slot.id] %}

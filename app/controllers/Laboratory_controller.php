@@ -12,10 +12,10 @@ class LaboratoryController extends BaseController {
     Redirect::to('/labs/' . $id . '/week/' . $week);
   }
 
+  // Since the lab page is also the page for creating new time slots, this function needs to get the current date.
 	public static function getLab($id, $week) {
     $lab = Laboratory::findOne($id);
     $year = date('Y');
-    //$week = date('W');
     $headers = array();
     $reservations = array();
     $userReservations = array();

@@ -15,12 +15,10 @@ class LabUserController extends BaseController {
 		$params = $_POST;
 
 		$user = LabUser::authenticate($params['username'], $params['password']);
-
 		if(!$user) {
 			View::make('user/login.html', array('error' => 'Wrong username or password', 'username' => $params['username']));
 		} else {
 			$_SESSION['user'] = $user->id;
-
 			Redirect::to('/userpage', array('message' => 'Login successfull.'));
 		}
 	}

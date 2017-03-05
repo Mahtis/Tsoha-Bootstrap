@@ -2,8 +2,8 @@
 
 class ExperimentController extends BaseController {
 
+    // lists the active (upcoming with free slots) experiments on the subject front page.
 	public static function availableExperiments() {
-		//this needs to be changed to findAllActive when there are active experiments in the database
 		$experiments = Experiment::findAllActive();
         $reserved = array();
         foreach($experiments as $key => $exp) {
@@ -68,20 +68,13 @@ class ExperimentController extends BaseController {
         View::make('experiment/create_experiment.html');
     }
 
-    /*
-    public static function viewExperiment($id) {
-    	$experiment = Experiment::findOne($id);
-    	$timeSlots[] = TimeSlot::findByExperiment($experiment->$id);
-        $reservations = Reservation::countReservationsForExperiment($id);
-    	View::make('experiment/experiment.html', array('experiment' => $experiment, 'timeSlots' => $timeSlots, 'reservations' => $reservations));
-    }*/
-
     public static function experimentUdpatePage($id) {
         $exp = Experiment::findOne($id);
         $req = RequiredInfo::findByExperiment($id);
         View::make('experiment/edit_experiment.html', array('exp' => $exp, 'req' => $req));
     }
 
+    // When updating an experiment, the there is also the possibility that the accompanying requiredInfo has to be edited or created.
     public static function update($id) {
         $params = $_POST;
         $attributes = array(

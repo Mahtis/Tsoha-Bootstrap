@@ -81,27 +81,15 @@ class Reservation extends BaseModel {
     }
   }
 
-  /* //this doesn't work.
-  public static function countReservationsForExperiments($exp_id) {
-    $query = DB::connection()->prepare('SELECT t.experiment_id AS id, COUNT(t.experiment_id) AS n FROM Reservation r, TimeSlot t WHERE r.timeslot_id=t.id AND t.experiment_id= ANY (:id) GROUP BY t.experiment_id');
-    $param = "{".implode(', ',$exp_ids)."}";
-    $query->bindParam('id', $param);
-    $query->execute();
-    $rows = $query->fetchAll();
-    $resCounts = array();
-    foreach($rows as $row){
-      $resCounts[] = new ReservationCount(array(
-      'experiment_id' => $row['id'],
-      'rCount' => $row['n']));
-    }
-    return $resCounts;
-  }*/
-
   // when creating a reservation, the corresponding timeslots freeslots need to be updated, but also all other overlapping timeslots need to be deleted.
   public function createReservation() {
   	$dbh = DB::connection();
   	$dbh->beginTransaction();
     $timeSlot = TimeSlot::findOne($this->timeSlot_id);
+    // check if timeslot is reservable
+    if ($timeSlot->freeSlots == 0) {
+      return null;
+    }
   	$insertQuery = $dbh->prepare('INSERT INTO Reservation (email, timeslot_id) VALUES (:email, :timeslot_id) RETURNING id');
     $insertQuery->execute(array(
      	'email' => $this->email, 

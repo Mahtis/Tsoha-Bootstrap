@@ -2,6 +2,7 @@
 
 class TimeSlotController extends BaseController {
 
+	// lists all timeslots associated with the experiment and also their reservations. 
 	public static function listExperimentTimeSlots($experiment_id) {
 		$experiment = Experiment::findOne($experiment_id);
 		$timeSlots = TimeSlot::findByExperiment($experiment_id);
@@ -19,36 +20,7 @@ class TimeSlotController extends BaseController {
 		View::make('timeslot/timeslots.html', array('experiment' => $experiment,'timeSlots' => $timeSlots, 'labs' => $labs, 'nextSlot' => $nextSlot, 'users' => $users, 'reservations' => $reservations, 'count' => $count));
 	}
 
-	/*
-	public static function createTimeSlotsToExperiment($experiment_id) {
-		$params = $_POST;
-		$startTime = $params['year'] . '-' . $params['month'] . '-' . $params['day'] . ' ' . $params['time'];
-		$endTimestamp = strtotime($startTime . '+' . $params['duration']);
-		$endTime = date('Y-m-d G:i', $endTimestamp);
-		$laboratory_id = $params['laboratory_id'];
-		$slot = new TimeSlot(array(
-			'startTime' => $startTime,
-			'endTime' => $endTime,
-			'maxReservations' => $params['maxReservations'],
-			'freeSlots' => $params['maxReservations'],
-			'labuser_id' => 1,
-			'laboratory_id' => $laboratory_id,
-			'experiment_id' => $experiment_id));
-
-		$errors = $slot->errors();
-
-		$time = date('G:i', $endTimestamp);
-		$nextSlot = new SlotInfo($params['day'], $params['month'], $params['year'], $time, $params['duration'], $experiment_id, $params['maxReservations']);
-
-		if(count($errors) > 0) {
-			Redirect::to('/labs/' . $laboratory_id . '/timeslots', array('errors' => $errors, 'slot' => $nextSlot));
-		} else {
-			$slot->save();
-			Redirect::to('/labs/' . $laboraotry_id . '/timeslots', array('message' => 'TimeSlot added.', 'slot' => $nextSlot));
-		}
-		
-	}*/
-
+	// When creating new TimeSlot, need to do additional checks to check that the date is correct and that the lab is noot booked at the wanted time
 	public static function createTimeSlotsToLab($laboratory_id) {
 		$user = parent::get_user_logged_in();
 		$params = $_POST;
@@ -105,6 +77,7 @@ class TimeSlotController extends BaseController {
 		View::make('timeslot/edit.html', array('timeSlot' => $timeSlot, 'labs' => $labs, 'experiments' => $experiments, 'slot' => $oldSlot));
 	}
 
+	// Similar to creating a TimeSlot, need to check that the date is valid and lab is not booked.
 	public static function update($id) {
 		$user = parent::get_user_logged_in();
 		$params = $_POST;
@@ -130,7 +103,7 @@ class TimeSlotController extends BaseController {
 		}
 
 		// check here if the lab is already booked at wanted time.
-		if (Laboratory::isLabBooked($params['laboratory_id'], $params['startTime'], $params['endTime'])) {
+		if (Laboratory::isLabBooked($params['laboratory_id'], $startTime, $endTime)) {
 			$errors[] = 'The laboratory is already reserved at that time.';
 		}
 
